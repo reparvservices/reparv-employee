@@ -30,6 +30,33 @@
 }
 
 /* Fix CKEditor bullet list visibility across Windows & macOS */
+
+/* Table Borders in CKEditor Output */
+.ck-content table {
+  border-collapse: collapse !important;
+  width: 100%;
+}
+
+.ck-content table, 
+.ck-content th, 
+.ck-content td {
+  border: 1px solid #000 !important;
+}
+
+.ck-content th, 
+.ck-content td {
+  padding: 8px !important;
+}
+
+.ck-content .table {
+  border: 1px solid #000 !important;
+}
+.ck-content .table td,
+.ck-content .table th {
+  border: 1px solid #000 !important;
+}
+
+/* List in CKEditor Output */
 .ck-content ul,
 .ck-content ol {
   list-style-position: outside !important;
