@@ -39,6 +39,8 @@ import { useAuth } from "./store/auth.jsx";
 import PropertyAuthority from "./pages/PropertyAuthority.jsx";
 import Subscription from "./pages/Subscription.jsx";
 import PropertiesFlatAndPlotInfo from "./pages/PropertiesFlatAndPlotInfo.jsx";
+import AdsManager from "./pages/AdsManager.jsx";
+import SubscriptionDiscount from "./pages/SubscriptionDiscount.jsx";
 
 const App = () => {
   const { URI, setLoading, user } = useAuth();
@@ -61,6 +63,10 @@ const App = () => {
       menu: <Route path="/calender" element={<Calender />} />,
     },
     {
+      name: "Ads Manager",
+      menu: <Route path="/ads-manager" element={<AdsManager />} />,
+    },
+    {
       name: "Customers",
       menu: <Route path="/customers" element={<Customers />} />,
     },
@@ -75,6 +81,10 @@ const App = () => {
     {
       name: "Subscription Pricing",
       menu: <Route path="/subscription-pricing" element={<Subscription />} />,
+    },
+    {
+      name: "Subscription Discount",
+      menu: <Route path="/subscription-discount" element={<SubscriptionDiscount />} />,
     },
     {
       name: "Builders",

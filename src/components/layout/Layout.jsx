@@ -224,6 +224,7 @@ function Layout() {
     { to: "/properties", icon: enquirersIcon, label: "Properties" },
     { to: "/map", icon: mapIcon, label: "Map" },
     { to: "/calender", icon: calenderIcon, label: "Calendar" },
+    { to: "/ads-manager", icon: employeeIcon, label: "Ads Manager" },
     { to: "/employees", icon: employeeIcon, label: "Employees" },
     { to: "/builders", icon: partnerIcon, label: "Builders" },
     { to: "/promoters", icon: partnerIcon, label: "Promoters" },
@@ -254,6 +255,11 @@ function Layout() {
       label: "Subscription Pricing",
     },
     {
+      to: "/subscription-discount",
+      icon: partnerIcon,
+      label: "Subscription Discount",
+    },
+    {
       to: "/users-loan-eligibility",
       icon: partnerIcon,
       label: "Users Loan Eligibility",
@@ -267,7 +273,7 @@ function Layout() {
     { to: "/trends", icon: marketingIcon, label: "Trends" },
     { to: "/slider", icon: marketingIcon, label: "Slider" },
     { to: "/testimonial", icon: marketingIcon, label: "Testimonial" },
-    
+
     {
       to: "/marketing-content",
       icon: marketingIcon,
