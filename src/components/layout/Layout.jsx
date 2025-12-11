@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 import reparvMainLogo from "../../assets/layout/reparvMainLogo.svg";
-import calenderIcon from "../../assets/layout/calenderIcon.svg";
-import customersIcon from "../../assets/layout/customersIcon.svg";
-import enquirersIcon from "../../assets/layout/enquirersIcon.svg";
-import mapIcon from "../../assets/layout/mapIcon.svg";
-import materialIcon from "../../assets/layout/materialIcon.svg";
 import overviewIcon from "../../assets/layout/overviewIcon.svg";
-import partnerIcon from "../../assets/layout/partnerIcon.svg";
-import employeeIcon from "../../assets/layout/employeeIcon.svg";
-import ticketingIcon from "../../assets/layout/ticketingIcon.svg";
-import marketingIcon from "../../assets/layout/marketingIcon.svg";
 import { Outlet } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
@@ -18,6 +9,30 @@ import Profile from "../Profile";
 import { useAuth } from "../../store/auth";
 import LogoutButton from "../LogoutButton";
 import { FaUserCircle } from "react-icons/fa";
+
+import { MdDashboard } from "react-icons/md";
+import { IoIosListBox } from "react-icons/io";
+import { HiUsers } from "react-icons/hi2";
+import { PiBuildingsFill } from "react-icons/pi";
+import { FaMapLocationDot } from "react-icons/fa6";
+import { RiAdvertisementFill } from "react-icons/ri";
+import { FaUserTie } from "react-icons/fa";
+import { FaBuildingUser } from "react-icons/fa6";
+import { FaUsersGear } from "react-icons/fa6";
+import { FaHandshake } from "react-icons/fa";
+import { BiCalendar, BiSolidDiamond } from "react-icons/bi";
+import { TbRosetteDiscountCheckFilled } from "react-icons/tb";
+import { FaClipboardUser } from "react-icons/fa6";
+import { FaUserCog } from "react-icons/fa";
+import { PiBuildingOfficeFill } from "react-icons/pi";
+import { FaTicket } from "react-icons/fa6";
+import { MdVerifiedUser } from "react-icons/md";
+import { FaBloggerB } from "react-icons/fa";
+import { FaArrowTrendUp } from "react-icons/fa6";
+import { TbLayoutSidebarRightCollapseFilled } from "react-icons/tb";
+import { MdFeedback } from "react-icons/md";
+import { GrDocumentVideo } from "react-icons/gr";
+import { FaPhotoVideo } from "react-icons/fa";
 
 function Layout() {
   const location = useLocation();
@@ -218,65 +233,101 @@ function Layout() {
   };
 
   const menus = [
-    { to: "/enquirers", icon: enquirersIcon, label: "Enquirers" },
-    { to: "/digital-broker", icon: enquirersIcon, label: "Digital Broker" },
-    { to: "/customers", icon: customersIcon, label: "Customers" },
-    { to: "/properties", icon: enquirersIcon, label: "Properties" },
-    { to: "/map", icon: mapIcon, label: "Map" },
-    { to: "/calender", icon: calenderIcon, label: "Calendar" },
-    { to: "/ads-manager", icon: employeeIcon, label: "Ads Manager" },
-    { to: "/employees", icon: employeeIcon, label: "Employees" },
-    { to: "/builders", icon: partnerIcon, label: "Builders" },
-    { to: "/promoters", icon: partnerIcon, label: "Promoters" },
+    { to: "/enquirers", icon: <IoIosListBox size={21} />, label: "Enquirers" },
+    {
+      to: "/digital-broker",
+      icon: <IoIosListBox size={21} />,
+      label: "Digital Broker",
+    },
+    { to: "/customers", icon: <HiUsers size={21} />, label: "Customers" },
+    {
+      to: "/properties",
+      icon: <PiBuildingsFill size={21} />,
+      label: "Properties",
+    },
+    { to: "/map", icon: <FaMapLocationDot size={21} />, label: "Map" },
+    { to: "/calender", icon: <BiCalendar size={21} />, label: "Calendar" },
+    {
+      to: "/ads-manager",
+      icon: <RiAdvertisementFill size={21} />,
+      label: "Ads Manager",
+    },
+    { to: "/employees", icon: <FaUserTie size={21} />, label: "Employees" },
+    { to: "/builders", icon: <FaBuildingUser size={21} />, label: "Builders" },
+    { to: "/promoters", icon: <FaHandshake size={21} />, label: "Promoters" },
     {
       to: "/projectpartner",
-      icon: partnerIcon,
+      icon: <FaHandshake size={21} />,
       label: "Project Partners",
     },
     {
       to: "/salespersons",
-      icon: partnerIcon,
+      icon: <FaHandshake size={21} />,
       label: "Sales Partner",
     },
     {
       to: "/onboardingpartner",
-      icon: partnerIcon,
+      icon: <FaHandshake size={21} />,
       label: "Onboarding Partners",
     },
     {
       to: "/territorypartner",
-      icon: partnerIcon,
+      icon: <FaHandshake size={21} />,
       label: "Territory Partners",
     },
-    { to: "/guest-users", icon: partnerIcon, label: "Guest Users" },
+    {
+      to: "/guest-users",
+      icon: <FaHandshake size={21} />,
+      label: "Guest Users",
+    },
     {
       to: "/subscription-pricing",
-      icon: partnerIcon,
+      icon: <BiSolidDiamond size={21} />,
       label: "Subscription Pricing",
     },
     {
       to: "/subscription-discount",
-      icon: partnerIcon,
+      icon: <TbRosetteDiscountCheckFilled size={21} />,
       label: "Subscription Discount",
     },
     {
       to: "/users-loan-eligibility",
-      icon: partnerIcon,
+      icon: <FaClipboardUser size={21} />,
       label: "Users Loan Eligibility",
     },
-    { to: "/role", icon: employeeIcon, label: "Roles" },
-    { to: "/department", icon: employeeIcon, label: "Departments" },
-    { to: "/property-authorities", icon: employeeIcon, label: "Authorities" },
-    { to: "/tickets", icon: ticketingIcon, label: "Tickets" },
-    { to: "/apk-upload", icon: marketingIcon, label: "Apk Upload" },
-    { to: "/blogs", icon: marketingIcon, label: "Blogs" },
-    { to: "/trends", icon: marketingIcon, label: "Trends" },
-    { to: "/slider", icon: marketingIcon, label: "Slider" },
-    { to: "/testimonial", icon: marketingIcon, label: "Testimonial" },
+    { to: "/role", icon: <FaUserCog size={21} />, label: "Roles" },
+    {
+      to: "/department",
+      icon: <PiBuildingOfficeFill size={21} />,
+      label: "Departments",
+    },
+    {
+      to: "/property-authorities",
+      icon: <MdVerifiedUser size={21} />,
+      label: "Authorities",
+    },
+    { to: "/tickets", icon: <FaTicket size={21} />, label: "Tickets" },
+    {
+      to: "/apk-upload",
+      icon: <FaBuildingUser size={21} />,
+      label: "Apk Upload",
+    },
+    { to: "/blogs", icon: <FaBloggerB size={21} />, label: "Blogs" },
+    { to: "/trends", icon: <FaArrowTrendUp size={21} />, label: "Trends" },
+    {
+      to: "/slider",
+      icon: <TbLayoutSidebarRightCollapseFilled size={21} />,
+      label: "Slider",
+    },
+    {
+      to: "/testimonial",
+      icon: <MdFeedback size={21} />,
+      label: "Testimonial",
+    },
 
     {
       to: "/marketing-content",
-      icon: marketingIcon,
+      icon: <FaPhotoVideo size={21} />,
       label: "Marketing Content",
     },
   ];
@@ -344,7 +395,7 @@ function Layout() {
         <div
           className={`w-64 ${
             isShortBar ? "md:w-[95px]" : "md:w-60"
-          } h-full fixed overflow-y-scroll scrollbar-hide bg-white shadow-md md:shadow-none md:static top-0 left-0 z-20 md:bg-[#F5F5F6] transition-transform duration-300 transform ${
+          } h-full fixed overflow-y-scroll scrollbar-hide bg-white shadow-md md:shadow-none md:static top-0 left-0 !z-[55] md:bg-[#F5F5F6] transition-transform duration-300 transform ${
             isSidebarOpen
               ? "translate-x-0"
               : "-translate-x-full md:translate-x-0"
@@ -397,12 +448,8 @@ function Layout() {
                     to
                   )}`}
                 >
-                  <div className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-[12px] bg-white">
-                    <img
-                      src={icon}
-                      alt={`${label} Icon`}
-                      className="md:h-6 md:w-6 w-5 h-5"
-                    />
+                  <div className="min-w-8 min-wh-8 md:min-w-10 md:min-h-10 flex items-center justify-center rounded-[12px] bg-white">
+                    {icon}
                   </div>
                   <span
                     className={`text-sm md:text-base ${
