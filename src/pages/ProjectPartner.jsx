@@ -24,6 +24,8 @@ const ProjectPartner = () => {
     setLoading,
     giveAccess,
     setGiveAccess,
+    showSeoForm,
+    setShowSeoForm,
     showPaymentIdForm,
     setShowPaymentIdForm,
     showPartner,
@@ -53,6 +55,15 @@ const ProjectPartner = () => {
     city: "",
     intrest: "",
   });
+
+  // Twitter SEO
+  const [twitterSite, setTwitterSite] = useState("");
+  const [twitterDescription, setTwitterDescription] = useState("");
+  // SEO Details
+  const [seoSlug, setSeoSlug] = useState("");
+  const [seoTitle, setSeoTitle] = useState("");
+  const [seoDescription, setSeoDescription] = useState("");
+  const [seoKeywords, setSeoKeywords] = useState("");
 
   const [payment, setPayment] = useState({
     amount: "",
@@ -270,6 +281,74 @@ const ProjectPartner = () => {
       fetchData();
     } catch (error) {
       console.error("Error deleting :", error);
+    }
+  };
+
+  //fetch data on form
+  const showSEO = async (id) => {
+    try {
+      const response = await fetch(URI + `/admin/projectpartner/get/${id}`, {
+        method: "GET",
+        credentials: "include", // Ensures cookies are sent
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) throw new Error("Failed to fetch project Partner.");
+      const data = await response.json();
+      setSeoSlug(data.seoSlug);
+      setSeoTitle(data.seoTitle);
+      setSeoDescription(data.seoDescription);
+      setSeoKeywords(data.seoKeywords);
+      setTwitterSite(data.twitterSite);
+      setTwitterDescription(data.twitterDescription);
+      setShowSeoForm(true);
+    } catch (err) {
+      console.error("Error fetching :", err);
+    }
+  };
+
+  // Add Or Update SEO Details Title , Description
+  const addSeoDetails = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const response = await fetch(
+        URI + `/admin/projectpartner/seo/${partnerId}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            seoSlug,
+            seoTitle,
+            seoDescription,
+            seoKeywords,
+            twitterSite,
+            twitterDescription,
+          }),
+        }
+      );
+      const data = await response.json();
+      console.log(response);
+      if (response.ok) {
+        alert(`Success: ${data.message}`);
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+      setShowSeoForm(false);
+      setSeoSlug("");
+      setSeoTitle("");
+      setSeoDescription("");
+      setTwitterSite("");
+      setTwitterDescription("");
+      await fetchData();
+    } catch (error) {
+      console.error("Error adding Seo Details reason:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -694,6 +773,9 @@ const ProjectPartner = () => {
           setPartnerId(id);
           setGiveAccess(true);
           break;
+        case "SEO":
+          setPartnerId(id);
+          showSEO(id);
         default:
           console.log("Invalid action");
       }
@@ -722,6 +804,7 @@ const ProjectPartner = () => {
           <option value="payment">Payment</option>
           <option value="followup">Follow Up</option>
           <option value="assignlogin">Assign Login</option>
+          <option value="SEO">Landing Page SEO</option>
           <option value="delete">Delete</option>
         </select>
       </div>
@@ -991,6 +1074,153 @@ const ProjectPartner = () => {
                 className="px-4 py-2 text-white bg-[#076300] rounded active:scale-[0.98]"
               >
                 Save
+              </button>
+              <Loader></Loader>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {/* ADD SEO Details */}
+      <div
+        className={` ${
+          !showSeoForm && "hidden"
+        } z-[61] overflow-scroll scrollbar-hide w-full flex fixed bottom-0 md:bottom-auto `}
+      >
+        <div className="w-full overflow-scroll scrollbar-hide md:w-[500px] lg:w-[700px] max-h-[80vh] bg-white py-8 pb-16 px-4 sm:px-6 border border-[#cfcfcf33] rounded-tl-lg rounded-tr-lg md:rounded-lg">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-[16px] font-semibold">SEO Details</h2>
+            <IoMdClose
+              onClick={() => {
+                setShowSeoForm(false);
+                setSeoSlug("");
+                setSeoTitle("");
+                setSeoDescription("");
+                setSeoKeywords("");
+                setTwitterSite("");
+                setTwitterDescription("");
+              }}
+              className="w-6 h-6 cursor-pointer"
+            />
+          </div>
+          <form onSubmit={addSeoDetails}>
+            <div className="w-full grid gap-2 place-items-center grid-cols-1 lg:grid-cols-1">
+              <input
+                type="hidden"
+                value={partnerId || ""}
+                onChange={(e) => {
+                  setPartnerId(e.target.value);
+                }}
+              />
+              {/*
+              <div className="w-full hidden">
+                <label className="block text-sm leading-4 text-[#00000066] font-medium ">
+                  Seo Slug
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Enter Slug"
+                  className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={seoSlug}
+                  onChange={(e) => {
+                    setSeoSlug(e.target.value);
+                  }}
+                />
+              </div>/*/}
+              <div className="w-full">
+                <label className="block text-xs ml-1 leading-4 text-[#00000066] font-medium ">
+                  Twitter Site
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter Site"
+                  className="w-full mt-[4px] text-[16px] font-medium p-3 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={twitterSite}
+                  onChange={(e) => {
+                    setTwitterSite(e.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="w-full">
+                <label className="block text-xs ml-1 leading-4 text-[#00000066] font-medium ">
+                  Twitter Description
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter Twitter Description"
+                  className="w-full mt-[4px] text-[16px] font-medium p-3 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={twitterDescription}
+                  onChange={(e) => {
+                    setTwitterDescription(e.target.value);
+                  }}
+                />
+              </div>
+              <div className={`w-full `}>
+                <label className="block text-xs ml-1 leading-4 text-[#00000066] font-medium ">
+                  Seo Title <span className="text-red-600">*</span>
+                </label>
+                <textarea
+                  rows={2}
+                  cols={40}
+                  placeholder="Enter SEO Title"
+                  required
+                  className="w-full mt-[4px] text-[16px] font-medium p-3 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={seoTitle}
+                  onChange={(e) => setSeoTitle(e.target.value)}
+                />
+              </div>
+              <div className={`w-full `}>
+                <label className="block text-xs ml-1 leading-4 text-[#00000066] font-medium ">
+                  Seo Description <span className="text-red-600">*</span>
+                </label>
+                <textarea
+                  rows={3}
+                  cols={40}
+                  placeholder="Enter SEO Description"
+                  required
+                  className="w-full mt-[4px] text-[16px] font-medium p-3 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={seoDescription}
+                  onChange={(e) => setSeoDescription(e.target.value)}
+                />
+              </div>
+              <div className={`w-full `}>
+                <label className="block text-xs ml-1 leading-4 text-[#00000066] font-medium ">
+                  Seo Keywords <span className="text-red-600">*</span>
+                </label>
+                <textarea
+                  rows={3}
+                  cols={40}
+                  required
+                  placeholder="Enter SEO Keywords"
+                  className="w-full mt-[4px] text-[16px] font-medium p-3 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={seoKeywords}
+                  onChange={(e) => setSeoKeywords(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex mt-8 md:mt-6 justify-end gap-6">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowSeoForm(false);
+                  setSeoSlug("");
+                  setSeoTitle("");
+                  setSeoDescription("");
+                  setSeoKeywords("");
+                  setTwitterSite("");
+                  setTwitterDescription("");
+                }}
+                className="px-4 py-2 leading-4 text-[#ffffff] bg-[#000000B2] rounded active:scale-[0.98]"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 text-white bg-[#076300] rounded active:scale-[0.98]"
+              >
+                Add SEO Details
               </button>
               <Loader></Loader>
             </div>
