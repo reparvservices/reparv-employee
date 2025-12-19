@@ -41,6 +41,7 @@ import Subscription from "./pages/Subscription.jsx";
 import PropertiesFlatAndPlotInfo from "./pages/PropertiesFlatAndPlotInfo.jsx";
 import AdsManager from "./pages/AdsManager.jsx";
 import SubscriptionDiscount from "./pages/SubscriptionDiscount.jsx";
+import Messages from "./pages/Messages.jsx";
 
 const App = () => {
   const { URI, setLoading, user } = useAuth();
@@ -110,6 +111,7 @@ const App = () => {
       name: "Territory Partners",
       menu: <Route path="/territorypartner" element={<TerritoryPartner />} />,
     },
+    { name: "Messages", menu: <Route path="/messages" element={<Messages />} /> },
     { name: "Roles", menu: <Route path="/role" element={<Role />} /> },
     {
       name: "Departments",

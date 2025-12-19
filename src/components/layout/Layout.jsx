@@ -33,6 +33,7 @@ import { TbLayoutSidebarRightCollapseFilled } from "react-icons/tb";
 import { MdFeedback } from "react-icons/md";
 import { GrDocumentVideo } from "react-icons/gr";
 import { FaPhotoVideo } from "react-icons/fa";
+import { MdMessage } from "react-icons/md";
 
 function Layout() {
   const location = useLocation();
@@ -156,7 +157,8 @@ function Layout() {
     setShowAuthorityForm,
     showSubscriptionForm,
     setShowSubscriptionForm,
-    showChangeProjectPartnerForm, setShowChangeProjectPartnerForm,
+    showChangeProjectPartnerForm,
+    setShowChangeProjectPartnerForm,
     isLoggedIn,
   } = useAuth();
 
@@ -220,7 +222,10 @@ function Layout() {
     { state: showPropertyLocationForm, setter: setShowPropertyLocationForm },
     { state: showAuthorityForm, setter: setShowAuthorityForm },
     { state: showSubscriptionForm, setter: setShowSubscriptionForm },
-    { state: showChangeProjectPartnerForm, setter: setShowChangeProjectPartnerForm },
+    {
+      state: showChangeProjectPartnerForm,
+      setter: setShowChangeProjectPartnerForm,
+    },
   ];
 
   const getNavLinkClass = (path) => {
@@ -281,6 +286,11 @@ function Layout() {
       to: "/guest-users",
       icon: <FaHandshake size={21} />,
       label: "Guest Users",
+    },
+    {
+      to: "/messages",
+      icon: <MdMessage size={21} />,
+      label: "Messages",
     },
     {
       to: "/subscription-pricing",
