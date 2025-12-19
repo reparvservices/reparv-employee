@@ -6,7 +6,7 @@ import DataTable from "react-data-table-component";
 import { FiMoreVertical } from "react-icons/fi";
 
 const Messages = () => {
-  const { URI, setLoading } = useAuth();
+  const { URI, user, setLoading } = useAuth();
   const [datas, setDatas] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
