@@ -42,6 +42,7 @@ import PropertiesFlatAndPlotInfo from "./pages/PropertiesFlatAndPlotInfo.jsx";
 import AdsManager from "./pages/AdsManager.jsx";
 import SubscriptionDiscount from "./pages/SubscriptionDiscount.jsx";
 import Messages from "./pages/Messages.jsx";
+import ScheduledRequests from "./pages/ScheduledRequests.jsx";
 
 const App = () => {
   const { URI, setLoading, user } = useAuth();
@@ -85,7 +86,12 @@ const App = () => {
     },
     {
       name: "Subscription Discount",
-      menu: <Route path="/subscription-discount" element={<SubscriptionDiscount />} />,
+      menu: (
+        <Route
+          path="/subscription-discount"
+          element={<SubscriptionDiscount />}
+        />
+      ),
     },
     {
       name: "Builders",
@@ -111,7 +117,16 @@ const App = () => {
       name: "Territory Partners",
       menu: <Route path="/territorypartner" element={<TerritoryPartner />} />,
     },
-    { name: "Messages", menu: <Route path="/messages" element={<Messages />} /> },
+    {
+      name: "Messages",
+      menu: <Route path="/messages" element={<Messages />} />,
+    },
+    {
+      name: "Scheduled Requests",
+      menu: (
+        <Route path="/scheduled-requests" element={<ScheduledRequests />} />
+      ),
+    },
     { name: "Roles", menu: <Route path="/role" element={<Role />} /> },
     {
       name: "Departments",

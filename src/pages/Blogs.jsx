@@ -28,6 +28,7 @@ const Blogs = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [blogId, setBlogId] = useState(null);
   const [newBlog, setNewBlog] = useState({
+    type: "All",
     tittle: "",
     description: "",
     content: "",
@@ -62,7 +63,6 @@ const Blogs = () => {
     setSelectedImage(file);
     setNewBlog((prev) => ({ ...prev, blogImage: file }));
   };
-
   const removeSingleImage = () => {
     setSelectedImage(null);
   };
@@ -101,6 +101,7 @@ const Blogs = () => {
 
       setNewBlog({
         id: data.id || "",
+        type: data.type || "All",
         tittle: data.tittle || "",
         description: data.description || "",
         content: data.content || "",
@@ -124,6 +125,7 @@ const Blogs = () => {
       setLoading(true);
 
       const formData = new FormData();
+      formData.append("type", newBlog.type);
       formData.append("tittle", newBlog.tittle);
       formData.append("description", newBlog.description);
       formData.append("content", newBlog.content);
@@ -149,6 +151,7 @@ const Blogs = () => {
         );
 
         setNewBlog({
+          type: "",
           tittle: "",
           description: "",
           content: "",
@@ -286,6 +289,7 @@ const Blogs = () => {
 
   const filteredData = blogs.filter((item) => {
     const matchesSearch =
+      item.type?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.tittle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.status?.toLowerCase().includes(searchTerm.toLowerCase());
 
@@ -319,6 +323,9 @@ const Blogs = () => {
     },
     headCells: {
       style: {
+        position: "sticky",
+        top: 0,
+        zIndex: 10,
         fontSize: "14px",
         fontWeight: "600",
         backgroundColor: "#F9FAFB",
@@ -375,7 +382,7 @@ const Blogs = () => {
                   "_blank"
                 );
               }}
-              className="w-full h-[90%] object-cover cursor-pointer"
+              className="w-full h-[100%] object-cover cursor-pointer"
             />
           </div>
         );
@@ -384,7 +391,12 @@ const Blogs = () => {
     },
     { name: "Date & Time", selector: (row) => row.created_at, width: "200px" },
     {
-      name: "Blog Tittle",
+      name: "Blog Type",
+      selector: (row) => row.type,
+      minWidth: "150px",
+    },
+    {
+      name: "Blog Title",
       selector: (row) => row.tittle,
       sortable: true,
       minWidth: "150px",
@@ -500,6 +512,8 @@ const Blogs = () => {
             customStyles={customStyles}
             columns={columns}
             data={filteredData}
+            fixedHeader
+            fixedHeaderScrollHeight="60vh"
             pagination
             paginationPerPage={15}
             paginationComponentOptions={{
@@ -525,6 +539,7 @@ const Blogs = () => {
               onClick={() => {
                 setShowBlogForm(false);
                 setNewBlog({
+                  type: "All",
                   tittle: "",
                   description: "",
                   content: "",
@@ -581,6 +596,35 @@ const Blogs = () => {
                 )}
               </div>
 
+              <div className="w-full">
+                <label
+                  htmlFor="blogType"
+                  className="block text-sm leading-4 text-[#00000066] font-medium mt-2"
+                >
+                  Blog Type
+                </label>
+
+                <select
+                  id="blogType"
+                  required
+                  className="w-full mt-[8px] mb-1 text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={newBlog?.type || "All"}
+                  onChange={(e) =>
+                    setNewBlog({ ...newBlog, type: e.target.value })
+                  }
+                >
+                  <option value="All">All</option>
+                  <option value="Mobile Apps">Mobile Apps</option>
+                  <option value="Properties">Properties</option>
+                  <option value="Guides">Guides</option>
+                  <option value="Sales">Sales</option>
+                  <option value="How to">How to</option>
+                  <option value="Rules & Laws">Rules & Laws</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
               <div className={`w-full `}>
                 <label
                   htmlFor="blogTittle"
@@ -623,7 +667,7 @@ const Blogs = () => {
                 <label className="block text-sm leading-4 text-[#00000066] font-medium mb-2">
                   Blog Content
                 </label>
-                <div className="border border-[#00000033] rounded-[4px] blog-content ck-content">
+                <div className="border border-[#00000033] rounded-[4px] blog-content ck-content overflow-hidden">
                   {showBlogForm && newBlog.content !== undefined && (
                     <CKEditor
                       key={newBlog.id || "new"}
@@ -693,6 +737,7 @@ const Blogs = () => {
                 onClick={() => {
                   setShowBlogForm(false);
                   setNewBlog({
+                    type: "All",
                     tittle: "",
                     description: "",
                     content: "",
@@ -720,7 +765,7 @@ const Blogs = () => {
           !showSeoForm && "hidden"
         } z-[61] overflow-scroll scrollbar-hide  w-full flex fixed bottom-0 md:bottom-auto `}
       >
-        <div className="w-full overflow-scroll scrollbar-hide md:w-[500px] lg:w-[700px] max-h-[80vh] bg-white py-8 pb-16 px-3 sm:px-6 border border-[#cfcfcf33] rounded-tl-lg rounded-tr-lg md:rounded-lg">
+        <div className="w-full max-h-[70vh] overflow-scroll scrollbar-hide md:w-[500px] lg:w-[700px] bg-white py-8 pb-16 px-3 sm:px-6 border border-[#cfcfcf33] rounded-tl-lg rounded-tr-lg md:rounded-lg">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-[16px] font-semibold">SEO Details</h2>
             <IoMdClose

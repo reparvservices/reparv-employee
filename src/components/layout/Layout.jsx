@@ -34,6 +34,7 @@ import { MdFeedback } from "react-icons/md";
 import { GrDocumentVideo } from "react-icons/gr";
 import { FaPhotoVideo } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
+import { RiCalendarScheduleLine } from "react-icons/ri";
 
 function Layout() {
   const location = useLocation();
@@ -291,6 +292,11 @@ function Layout() {
       to: "/messages",
       icon: <MdMessage size={21} />,
       label: "Messages",
+    },
+    {
+      to: "/scheduled-requests",
+      icon: <RiCalendarScheduleLine size={21} />,
+      label: "Scheduled Requests",
     },
     {
       to: "/subscription-pricing",
