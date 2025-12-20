@@ -35,6 +35,7 @@ import { GrDocumentVideo } from "react-icons/gr";
 import { FaPhotoVideo } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
 import { RiCalendarScheduleLine } from "react-icons/ri";
+import { RiQuestionnaireFill } from "react-icons/ri";
 
 function Layout() {
   const location = useLocation();
@@ -160,6 +161,7 @@ function Layout() {
     setShowSubscriptionForm,
     showChangeProjectPartnerForm,
     setShowChangeProjectPartnerForm,
+    showFAQForm, setShowFAQForm,
     isLoggedIn,
   } = useAuth();
 
@@ -227,6 +229,7 @@ function Layout() {
       state: showChangeProjectPartnerForm,
       setter: setShowChangeProjectPartnerForm,
     },
+    { state: showFAQForm, setter: setShowFAQForm },
   ];
 
   const getNavLinkClass = (path) => {
@@ -330,6 +333,7 @@ function Layout() {
       icon: <FaBuildingUser size={21} />,
       label: "Apk Upload",
     },
+    { to: "/faqs", icon: <RiQuestionnaireFill size={21} />, label: "FAQs" },
     { to: "/blogs", icon: <FaBloggerB size={21} />, label: "Blogs" },
     { to: "/trends", icon: <FaArrowTrendUp size={21} />, label: "Trends" },
     {

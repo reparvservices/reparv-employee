@@ -43,6 +43,7 @@ import AdsManager from "./pages/AdsManager.jsx";
 import SubscriptionDiscount from "./pages/SubscriptionDiscount.jsx";
 import Messages from "./pages/Messages.jsx";
 import ScheduledRequests from "./pages/ScheduledRequests.jsx";
+import FAQs from "./pages/FAQs.jsx";
 
 const App = () => {
   const { URI, setLoading, user } = useAuth();
@@ -160,6 +161,7 @@ const App = () => {
       name: "Apk Upload",
       menu: <Route path="/apk-upload" element={<ApkUpload />} />,
     },
+    { name: "FAQs", menu: <Route path="/faqs" element={<FAQs />} /> },
     { name: "Blogs", menu: <Route path="/blogs" element={<Blogs />} /> },
     { name: "Trends", menu: <Route path="/trends" element={<Trends />} /> },
     {
