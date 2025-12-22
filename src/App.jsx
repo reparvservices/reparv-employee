@@ -44,6 +44,7 @@ import SubscriptionDiscount from "./pages/SubscriptionDiscount.jsx";
 import Messages from "./pages/Messages.jsx";
 import ScheduledRequests from "./pages/ScheduledRequests.jsx";
 import FAQs from "./pages/FAQs.jsx";
+import BlogFAQs from "./pages/BlogFAQ.jsx";
 
 const App = () => {
   const { URI, setLoading, user } = useAuth();
@@ -189,6 +190,7 @@ const App = () => {
             path="/user-loan-eligibility-data-update/:id"
             element={<UpdateEMI />}
           />
+          <Route path="/blog/manage-faqs/:blogId" element={<BlogFAQs />} />
 
           {/* Menu Wise Dynamic Routes */}
           {dynamicRoutes.map((menu, index) => (
