@@ -23,7 +23,8 @@ const Builders = () => {
     setGiveAccess,
     setShowBuilder,
     showBuilder,
-    URI, user,
+    URI,
+    user,
     loading,
     setLoading,
   } = useAuth();
@@ -39,12 +40,9 @@ const Builders = () => {
     contact_person: "",
     contact: "",
     email: "",
-    uid: "",
-    office_address: "",
+
     registration_no: "",
     dor: "",
-    website: "",
-    notes: "",
   });
   // **Fetch Data from API**
   const fetchData = async () => {
@@ -52,16 +50,13 @@ const Builders = () => {
       ? `${URI}/employee/builders/`
       : `${URI}/admin/builders/get/${selectedLister}`;
     try {
-      const response = await fetch(
-        endpoint,
-        {
-          method: "GET",
-          credentials: "include", // Ensures cookies are sent
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(endpoint, {
+        method: "GET",
+        credentials: "include", // Ensures cookies are sent
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (!response.ok) throw new Error("Failed to fetch builders.");
       const data = await response.json();
       setDatas(data);
@@ -79,12 +74,17 @@ const Builders = () => {
 
     try {
       setLoading(true);
-      const response = await fetch(`${URI}/${user?.projectpartnerid ? "employee":"admin"}/builders/${endpoint}`, {
-        method: newBuilder.builderid ? "PUT" : "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newBuilder),
-      });
+      const response = await fetch(
+        `${URI}/${
+          user?.projectpartnerid ? "employee" : "admin"
+        }/builders/${endpoint}`,
+        {
+          method: newBuilder.builderid ? "PUT" : "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newBuilder),
+        }
+      );
 
       if (response.status === 409) {
         alert("Builder already exists!");
@@ -104,12 +104,9 @@ const Builders = () => {
         contact_person: "",
         contact: "",
         email: "",
-        uid: "",
-        office_address: "",
+
         registration_no: "",
         dor: "",
-        website: "",
-        notes: "",
       });
 
       setShowBuilderForm(false);
@@ -125,13 +122,18 @@ const Builders = () => {
   //fetch data on form
   const edit = async (builderid) => {
     try {
-      const response = await fetch(`${URI}/${user?.projectpartnerid ? "employee":"admin"}/builders/${builderid}`, {
-        method: "GET",
-        credentials: "include", // Ensures cookies are sent
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${URI}/${
+          user?.projectpartnerid ? "employee" : "admin"
+        }/builders/${builderid}`,
+        {
+          method: "GET",
+          credentials: "include", // Ensures cookies are sent
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (!response.ok) throw new Error("Failed to fetch builders.");
       const data = await response.json();
       setNewBuilder(data);
@@ -144,13 +146,18 @@ const Builders = () => {
   //fetch data on form
   const viewBuilder = async (builderid) => {
     try {
-      const response = await fetch(`${URI}/${user?.projectpartnerid ? "employee":"admin"}/builders/${builderid}`, {
-        method: "GET",
-        credentials: "include", // Ensures cookies are sent
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${URI}/${
+          user?.projectpartnerid ? "employee" : "admin"
+        }/builders/${builderid}`,
+        {
+          method: "GET",
+          credentials: "include", // Ensures cookies are sent
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (!response.ok) throw new Error("Failed to fetch builders.");
       const data = await response.json();
       setBuilder(data);
@@ -166,7 +173,9 @@ const Builders = () => {
       return;
     try {
       const response = await fetch(
-        `${URI}/${user?.projectpartnerid ? "employee":"admin"}/builders/delete/${builderid}`,
+        `${URI}/${
+          user?.projectpartnerid ? "employee" : "admin"
+        }/builders/delete/${builderid}`,
         {
           method: "DELETE",
           credentials: "include", // Ensures cookies are sent
@@ -198,7 +207,9 @@ const Builders = () => {
 
     try {
       const response = await fetch(
-        `${URI}/${user?.projectpartnerid ? "employee":"admin"}/builders/status/${builderid}`,
+        `${URI}/${
+          user?.projectpartnerid ? "employee" : "admin"
+        }/builders/status/${builderid}`,
         {
           method: "PUT",
           credentials: "include", // Ensures cookies are sent
@@ -231,7 +242,9 @@ const Builders = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `${URI}/${user?.projectpartnerid ? "employee":"admin"}/builders/assignlogin/${selectedBuilderId}`,
+        `${URI}/${
+          user?.projectpartnerid ? "employee" : "admin"
+        }/builders/assignlogin/${selectedBuilderId}`,
         {
           method: "PUT",
           headers: {
@@ -401,12 +414,7 @@ const Builders = () => {
     },
     { name: "Contact", selector: (row) => row.contact, width: "150px" },
     { name: "Email", selector: (row) => row.email, minWidth: "150px" },
-    { name: "Aadhaar No", selector: (row) => row.uid, width: "150px" },
-    {
-      name: "Office address",
-      selector: (row) => row.office_address,
-      width: "200px",
-    },
+
     {
       name: "Registration No",
       selector: (row) => row.registration_no,
@@ -486,8 +494,16 @@ const Builders = () => {
       className={`builders overflow-scroll scrollbar-hide w-full h-screen flex flex-col items-start justify-start`}
     >
       <div className="builder-table overflow-scroll scrollbar-hide w-full h-[80vh] flex flex-col px-4 md:px-6 py-6 gap-4 my-[10px] bg-white md:rounded-[24px]">
-        <div className={`w-full flex items-center ${user?.projectpartnerid ? "justify-end" : "justify-between"} gap-1 sm:gap-3`}>
-          <div className={`${user?.projectpartnerid && "hidden"} w-[65%] sm:min-w-[220px] sm:max-w-[230px] relative inline-block`}>
+        <div
+          className={`w-full flex items-center ${
+            user?.projectpartnerid ? "justify-end" : "justify-between"
+          } gap-1 sm:gap-3`}
+        >
+          <div
+            className={`${
+              user?.projectpartnerid && "hidden"
+            } w-[65%] sm:min-w-[220px] sm:max-w-[230px] relative inline-block`}
+          >
             <div className="flex gap-2 items-center justify-between bg-white border border-[#00000033] text-sm font-semibold  text-black rounded-lg py-1 px-3 focus:outline-none focus:ring-2 focus:ring-[#076300]">
               <span>{selectedLister || "Select Lister"}</span>
               <RiArrowDropDownLine className="w-6 h-6 text-[#000000B2]" />
@@ -648,43 +664,6 @@ const Builders = () => {
                   }
                 />
               </div>
-              <div className="w-full">
-                <label className="block text-sm leading-4 text-[#00000066] font-medium">
-                  Aadhaar Number <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="number"
-                  required
-                  placeholder="Enter Aadhaar No"
-                  className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={newBuilder.uid}
-                  onChange={(e) => {
-                    const input = e.target.value;
-                    if (/^\d{0,12}$/.test(input)) {
-                      // Allows only up to 12 digits
-                      setNewBuilder({ ...newBuilder, uid: input });
-                    }
-                  }}
-                />
-              </div>
-              <div className="w-full">
-                <label className="block text-sm leading-4 text-[#00000066] font-medium">
-                  Office Address <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Enter Office Address"
-                  className="w-full mt-2 text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={newBuilder.office_address}
-                  onChange={(e) =>
-                    setNewBuilder({
-                      ...newBuilder,
-                      office_address: e.target.value,
-                    })
-                  }
-                />
-              </div>
 
               <div className="w-full">
                 <label className="block text-sm leading-4 text-[#00000066] font-medium">
@@ -719,36 +698,6 @@ const Builders = () => {
                     const formattedDate = selectedDate.split("T")[0]; // Extract only YYYY-MM-DD
                     setNewBuilder({ ...newBuilder, dor: formattedDate });
                   }}
-                />
-              </div>
-              <div className="w-full">
-                <label className="block text-sm leading-4 text-[#00000066] font-medium">
-                  Website <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Enter website"
-                  className="w-full mt-2 text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={newBuilder.website}
-                  onChange={(e) =>
-                    setNewBuilder({ ...newBuilder, website: e.target.value })
-                  }
-                />
-              </div>
-              <div className="w-full">
-                <label className="block text-sm leading-4 text-[#00000066] font-medium">
-                  Notes <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Enter notes"
-                  className="w-full mt-2 text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={newBuilder.notes}
-                  onChange={(e) =>
-                    setNewBuilder({ ...newBuilder, notes: e.target.value })
-                  }
                 />
               </div>
             </div>
@@ -938,18 +887,7 @@ const Builders = () => {
                 readOnly
               />
             </div>
-            <div className="w-full ">
-              <label className="block text-sm leading-4 text-[#00000066] font-medium">
-                Office Address
-              </label>
-              <input
-                type="text"
-                disabled
-                className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={builder.office_address}
-                readOnly
-              />
-            </div>
+
             <div className="w-full ">
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 Resgistration Date
@@ -971,30 +909,6 @@ const Builders = () => {
                 disabled
                 className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={builder.registration_no}
-                readOnly
-              />
-            </div>
-            <div className="w-full ">
-              <label className="block text-sm leading-4 text-[#00000066] font-medium">
-                Website
-              </label>
-              <input
-                type="text"
-                disabled
-                className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={builder.website}
-                readOnly
-              />
-            </div>
-            <div className="w-full ">
-              <label className="block text-sm leading-4 text-[#00000066] font-medium">
-                Notes
-              </label>
-              <input
-                type="text"
-                disabled
-                className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={builder.notes}
                 readOnly
               />
             </div>
