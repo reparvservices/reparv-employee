@@ -45,6 +45,8 @@ import Messages from "./pages/Messages.jsx";
 import ScheduledRequests from "./pages/ScheduledRequests.jsx";
 import FAQs from "./pages/FAQs.jsx";
 import BlogFAQs from "./pages/BlogFAQ.jsx";
+import CallEnquirers from "./pages/CallEnquirers.jsx";
+import WhatsappEnquirers from "./pages/WhatsappEnquirers.jsx";
 
 const App = () => {
   const { URI, setLoading, user } = useAuth();
@@ -52,6 +54,16 @@ const App = () => {
     {
       name: "Enquirers",
       menu: <Route path="/enquirers" element={<Enquirers />} />,
+    },
+    {
+      name: "Call Enquirers",
+      menu: <Route path="/call-enquirers" element={<CallEnquirers />} />,
+    },
+    {
+      name: "Whatsapp Enquirers",
+      menu: (
+        <Route path="/whatsapp-enquirers" element={<WhatsappEnquirers />} />
+      ),
     },
     {
       name: "Digital Broker",
