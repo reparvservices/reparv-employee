@@ -245,6 +245,8 @@ function Layout() {
 
   const menus = [
     { to: "/enquirers", icon: <IoIosListBox size={21} />, label: "Enquirers" },
+    { to: "/call-enquirers", icon: <IoIosListBox size={21} />, label: "Call Enquirers" },
+    { to: "/whatsapp-enquirers", icon: <IoIosListBox size={21} />, label: "Whatsapp Enquirers" },
     {
       to: "/digital-broker",
       icon: <IoIosListBox size={21} />,
