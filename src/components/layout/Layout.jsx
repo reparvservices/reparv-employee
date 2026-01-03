@@ -161,7 +161,10 @@ function Layout() {
     setShowSubscriptionForm,
     showChangeProjectPartnerForm,
     setShowChangeProjectPartnerForm,
-    showFAQForm, setShowFAQForm,
+    showFAQForm,
+    setShowFAQForm,
+    showAdURLForm,
+    setShowAdURLForm,
     isLoggedIn,
   } = useAuth();
 
@@ -230,6 +233,7 @@ function Layout() {
       setter: setShowChangeProjectPartnerForm,
     },
     { state: showFAQForm, setter: setShowFAQForm },
+    { state: showAdURLForm, setter: setShowAdURLForm },
   ];
 
   const getNavLinkClass = (path) => {
@@ -245,8 +249,16 @@ function Layout() {
 
   const menus = [
     { to: "/enquirers", icon: <IoIosListBox size={21} />, label: "Enquirers" },
-    { to: "/call-enquirers", icon: <IoIosListBox size={21} />, label: "Call Enquirers" },
-    { to: "/whatsapp-enquirers", icon: <IoIosListBox size={21} />, label: "Whatsapp Enquirers" },
+    {
+      to: "/call-enquirers",
+      icon: <IoIosListBox size={21} />,
+      label: "Call Enquirers",
+    },
+    {
+      to: "/whatsapp-enquirers",
+      icon: <IoIosListBox size={21} />,
+      label: "Whatsapp Enquirers",
+    },
     {
       to: "/digital-broker",
       icon: <IoIosListBox size={21} />,
