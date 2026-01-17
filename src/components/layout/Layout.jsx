@@ -266,6 +266,11 @@ function Layout() {
     },
     { to: "/customers", icon: <HiUsers size={21} />, label: "Customers" },
     {
+      to: "/contact-us-messages",
+      icon: <MdMessage size={21} />,
+      label: "Contact_Us Messages",
+    },
+    {
       to: "/properties",
       icon: <PiBuildingsFill size={21} />,
       label: "Properties",

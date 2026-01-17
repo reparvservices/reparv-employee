@@ -47,6 +47,7 @@ import FAQs from "./pages/FAQs.jsx";
 import BlogFAQs from "./pages/BlogFAQ.jsx";
 import CallEnquirers from "./pages/CallEnquirers.jsx";
 import WhatsappEnquirers from "./pages/WhatsappEnquirers.jsx";
+import ContactUsMessages from "./pages/ContactUsMessages.jsx";
 
 const App = () => {
   const { URI, setLoading, user } = useAuth();
@@ -134,6 +135,10 @@ const App = () => {
     {
       name: "Messages",
       menu: <Route path="/messages" element={<Messages />} />,
+    },
+    {
+      name: "Contact_Us Messages",
+      menu: <Route path="/contact-us-messages" element={<ContactUsMessages />} />,
     },
     {
       name: "Scheduled Requests",
