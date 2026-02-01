@@ -4,6 +4,7 @@ import "react-calendar/dist/Calendar.css";
 import { format } from "date-fns";
 import CustomDateRangePicker from "../components/CustomDateRangePicker";
 import { useAuth } from "../store/auth";
+import { getImageURI } from "../utils/helper";
 
 const statusClasses = {
   scheduled: "bg-blue-100 text-blue-600",

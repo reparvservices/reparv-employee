@@ -7,6 +7,7 @@ import { IoMdClose } from "react-icons/io";
 import DataTable from "react-data-table-component";
 import { FiMoreVertical } from "react-icons/fi";
 import Loader from "../components/Loader";
+import { getImageURI } from "../utils/helper";
 
 const Slider = () => {
   const {
@@ -112,11 +113,14 @@ const Slider = () => {
 
     try {
       setLoading(true);
-      const response = await fetch(`${URI}/admin/slider/small/addimage/${sliderId}`, {
-        method: "PUT",
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        `${URI}/admin/slider/small/addimage/${sliderId}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Failed to save property. Status: ${response.status}`);
@@ -249,7 +253,7 @@ const Slider = () => {
           className={`w-[340px] h-[110px] lg:h-[120px] xl:h-[150px] overflow-hidden flex items-center justify-center`}
         >
           <img
-            src={`${URI}/uploads/${row.image}`}
+            src={`${getImageURI(row.image)}`}
             alt="Image"
             className="w-[340px] h-[90%] object- cursor-pointer"
           />
@@ -264,7 +268,7 @@ const Slider = () => {
           className={`w-full h-[110px] lg:h-[120px] xl:h-[150px] overflow-hidden flex items-center justify-start`}
         >
           <img
-            src={`${URI}/uploads/${row.mobileimage}`}
+            src={`${getImageURI(row.mobileimage)}`}
             alt="Image"
             className={`${
               row.mobileimage == null ? "hidden" : "block"

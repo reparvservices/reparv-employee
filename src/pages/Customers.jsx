@@ -11,6 +11,7 @@ import DownloadCSV from "../components/DownloadCSV";
 import Loader from "../components/Loader";
 import propertyPicture from "../assets/propertyPicture.svg";
 import FormatPrice from "../components/FormatPrice";
+import { getImageURI } from "../utils/helper";
 
 const Customers = () => {
   const {
@@ -244,7 +245,7 @@ const Customers = () => {
         try {
           const parsed = JSON.parse(row.frontView);
           if (Array.isArray(parsed) && parsed[0]) {
-            imageSrc = `${URI}${parsed[0]}`;
+            imageSrc = `${getImageURI(parsed[0])}`;
           }
         } catch (e) {
           console.warn("Invalid or null frontView:", row.frontView);
@@ -693,10 +694,10 @@ const Customers = () => {
                   <div className="w-full px-2 py-1 border rounded-lg">
                     <div className="w-full mt-2 flex flex-row gap-3 items-start justify-start ">
                       <img
-                        src={URI + customer.paymentimage}
+                        src={getImageURI(customer.paymentimage)}
                         alt="Payment_Image"
                         onClick={() => {
-                          window.open(URI + customer.paymentimage, "_blank");
+                          window.open(getImageURI(customer.paymentimage), "_blank");
                         }}
                         className="w-[120px] max-h-[100px] object-cover cursor-pointer"
                       />
@@ -732,10 +733,10 @@ const Customers = () => {
                     <div className="w-full px-2 py-1 border rounded-lg">
                       <div className="w-full mt-2 flex flex-row gap-3 items-start justify-start ">
                         <img
-                          src={URI + payment.paymentImage}
+                          src={getImageURI(payment.paymentImage)}
                           alt="Payment_Image"
                           onClick={() => {
-                            window.open(URI + payment.paymentImage, "_blank");
+                            window.open(getImageURI(payment.paymentImage), "_blank");
                           }}
                           className="w-[120px] h-[80px] object-cover cursor-pointer"
                         />

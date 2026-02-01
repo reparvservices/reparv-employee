@@ -19,6 +19,7 @@ import DownloadCSV from "../components/DownloadCSV";
 import UpdateImagesForm from "../components/propertyForm/UpdateImagesForm";
 import FormatPrice from "../components/FormatPrice";
 import Select from "react-select";
+import { getImageURI } from "../utils/helper";
 
 const Properties = () => {
   const navigate = useNavigate();
@@ -1350,7 +1351,7 @@ const Properties = () => {
         try {
           const parsed = JSON.parse(row.frontView);
           if (Array.isArray(parsed) && parsed[0]) {
-            imageSrc = `${URI}${parsed[0]}`;
+            imageSrc = `${getImageURI(parsed[0])}`;
           }
         } catch (e) {
           console.warn("Invalid or null frontView:", row.frontView);
