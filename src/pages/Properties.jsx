@@ -1222,6 +1222,33 @@ const Properties = () => {
     }
   };
 
+  // change property into hot deal
+  const reparvAssured = async (id) => {
+    if (!window.confirm("Are you sure to change Reparv Assured status ?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        URI + `/admin/properties/reparv-assured/${id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+        }
+      );
+      const data = await response.json();
+      //console.log(response);
+      if (response.ok) {
+        alert(`Success: ${data.message}`);
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+      fetchData();
+    } catch (error) {
+      console.error("Error Reparv Assured :", error);
+    }
+  };
+
   const customStyle = {
     menu: (provided) => ({
       ...provided,
@@ -1435,6 +1462,21 @@ const Properties = () => {
       minWidth: "150px",
     },
     {
+      name: "Reparv Assured",
+      cell: (row) => (
+        <span
+          className={`px-2 py-1 rounded-md ${
+            row.reparvAssured === "Active"
+              ? "bg-[#EAFBF1] text-[#0BB501]"
+              : "bg-gray-100"
+          }`}
+        >
+          {row.reparvAssured === "Active" ? "Assured" : "Not Assured"}
+        </span>
+      ),
+      minWidth: "150px",
+    },
+    {
       name: "Reject Reason",
       selector: (row) => row.rejectreason || "-- No Reason --",
       minWidth: "150px",
@@ -1474,6 +1516,8 @@ const Properties = () => {
         case "approve":
           approve(propertyid);
           break;
+        case "reparvAssured":
+          reparvAssured(propertyid);
         case "updateLocation":
           setPropertyKey(propertyid);
           fetchPropertyLocation(propertyid);
@@ -1540,6 +1584,12 @@ const Properties = () => {
           <option value="update">Update</option>
           <option value="delete">Delete</option>
           <option value="approve">Approve</option>
+          {user?.projectpartnerid ? (
+            <></>
+          ) : (
+            <option value="reparvAssured">Reparv Assured</option>
+          )}
+
           {row.propertyCategory === "NewFlat" ||
           row.propertyCategory === "CommercialFlat" ? (
             <option value="additionalinfo">Additional Info</option>
