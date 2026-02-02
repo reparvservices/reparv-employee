@@ -8,6 +8,7 @@ import FilterData from "../components/FilterData";
 import AddButton from "../components/AddButton";
 import { IoMdClose } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
+import { FaFire } from "react-icons/fa6";
 import DataTable from "react-data-table-component";
 import { FiMoreVertical } from "react-icons/fi";
 import Loader from "../components/Loader";
@@ -47,6 +48,8 @@ const Properties = () => {
     setShowPropertyLocationForm,
     showChangeProjectPartnerForm,
     setShowChangeProjectPartnerForm,
+    showTopPicksForm,
+    setShowTopPicksForm,
     URI,
     user,
     loading,
@@ -218,6 +221,11 @@ const Properties = () => {
   const [videoUpload, setVideoUpload] = useState({
     brochureFile: "",
     videoLink: "",
+  });
+
+  const [topPicks, setTopPicks] = useState({
+    topPicksStatus: "",
+    topPicksBanner: "",
   });
 
   //Single Image Upload
@@ -1223,6 +1231,100 @@ const Properties = () => {
   };
 
   // change property into hot deal
+  const hotDeal = async (id) => {
+    if (!window.confirm("Are you sure to change hot Deal status?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        URI + `/admin/properties/set/hotdeal/${id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+        }
+      );
+      const data = await response.json();
+      //console.log(response);
+      if (response.ok) {
+        alert(`Success: ${data.message}`);
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+      fetchData();
+    } catch (error) {
+      console.error("Error hot Dealingg :", error);
+    }
+  };
+
+  // Fetch Top Picks data
+  const showTopPicks = async (id) => {
+    try {
+      const response = await fetch(URI + `/admin/properties/${id}`, {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch top picks");
+
+      const data = await response.json();
+
+      setTopPicks({
+        topPicksStatus: data.topPicksStatus || "",
+        topPicksBanner: data.topPicksBanner || "",
+      });
+
+      setPropertyKey(id);
+      setShowTopPicksForm(true);
+    } catch (err) {
+      console.error("Error fetching top picks:", err);
+    }
+  };
+
+  const addTopPicks = async (e) => {
+    e?.preventDefault();
+
+    try {
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append("topPicksStatus", topPicks.topPicksStatus);
+      if (topPicks.topPicksBanner instanceof File) {
+        formData.append("topPicksBanner", topPicks.topPicksBanner);
+      }
+
+      const response = await fetch(
+        URI + `/admin/properties/set/top-picks/${propertyKey}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(`Success: ${data.message}`);
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+
+      setShowTopPicksForm(false);
+      setTopPicks({
+        topPicksStatus: "",
+        topPicksBanner: "",
+      });
+
+      await fetchData();
+    } catch (error) {
+      console.error("Error adding top picks:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // change property into hot deal
   const reparvAssured = async (id) => {
     if (!window.confirm("Are you sure to change Reparv Assured status ?")) {
       return;
@@ -1405,9 +1507,21 @@ const Properties = () => {
     { name: "Date & Time", selector: (row) => row.created_at, width: "200px" },
     {
       name: "Property Name",
-      selector: (row) => row.propertyName,
+      cell: (row, index) => (
+        <div className="relative group flex items-center w-full">
+          {/* Property Name */}
+          <span
+            className={`min-w-6 flex items-center justify-center px-2 py-1 rounded-md cursor-pointer`}
+          >
+            {row.hotDeal === "Active" && (
+              <FaFire className="text-red-600 mr-1" />
+            )}{" "}
+            {row.propertyName}
+          </span>
+        </div>
+      ),
       sortable: true,
-      minWidth: "150px",
+      minWidth: "200px",
     },
     {
       name: "Offer Price",
@@ -1477,6 +1591,21 @@ const Properties = () => {
       minWidth: "150px",
     },
     {
+      name: "Top Picks",
+      cell: (row) => (
+        <span
+          className={`px-2 py-1 rounded-md ${
+            row.topPicksStatus === "Active"
+              ? "bg-[#EAFBF1] text-[#0BB501]"
+              : "bg-gray-100"
+          }`}
+        >
+          {row.topPicksStatus}
+        </span>
+      ),
+      minWidth: "150px",
+    },
+    {
       name: "Reject Reason",
       selector: (row) => row.rejectreason || "-- No Reason --",
       minWidth: "150px",
@@ -1515,6 +1644,13 @@ const Properties = () => {
           break;
         case "approve":
           approve(propertyid);
+          break;
+        case "hotdeal":
+          hotDeal(propertyid);
+          break;
+        case "topPicks":
+          setPropertyKey(propertyid);
+          showTopPicks(propertyid);
           break;
         case "reparvAssured":
           reparvAssured(propertyid);
@@ -1584,6 +1720,17 @@ const Properties = () => {
           <option value="update">Update</option>
           <option value="delete">Delete</option>
           <option value="approve">Approve</option>
+
+          {user?.projectpartnerid ? (
+            <></>
+          ) : (
+            <option value="hotdeal">Set Hot Deal</option>
+          )}
+          {user?.projectpartnerid ? (
+            <></>
+          ) : (
+            <option value="topPicks">Set Top Picks</option>
+          )}
           {user?.projectpartnerid ? (
             <></>
           ) : (
@@ -2391,6 +2538,133 @@ const Properties = () => {
                 Add Reason
               </button>
               <Loader></Loader>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {/* Set Top Picks Property Form */}
+      <div
+        className={`${
+          !showTopPicksForm && "hidden"
+        } z-[61] overflow-scroll scrollbar-hide w-full flex fixed bottom-0 md:bottom-auto`}
+      >
+        <div className="w-full overflow-scroll scrollbar-hide md:w-[500px] max-h-[80vh] bg-white py-8 pb-16 px-4 sm:px-6 border border-[#cfcfcf33] rounded-tl-lg rounded-tr-lg md:rounded-lg">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-[16px] font-semibold">Set Top Picks</h2>
+            <IoMdClose
+              onClick={() => setShowTopPicksForm(false)}
+              className="w-6 h-6 cursor-pointer"
+            />
+          </div>
+
+          <form onSubmit={addTopPicks}>
+            <div className="w-full grid gap-4 place-items-center grid-cols-1 lg:grid-cols-1">
+              {/* Hidden Property Key */}
+              <input
+                type="hidden"
+                value={propertyKey || ""}
+                onChange={(e) => setPropertyKey(e.target.value)}
+              />
+
+              {/* Top Picks Status */}
+              <div className="w-full">
+                <select
+                  value={topPicks.topPicksStatus}
+                  onChange={(e) =>
+                    setTopPicks({
+                      ...topPicks,
+                      topPicksStatus: e.target.value,
+                    })
+                  }
+                  className={`${
+                    topPicks.topPicksStatus === "Active"
+                      ? "text-green-600 font-bold"
+                      : topPicks.topPicksStatus === "Inactive"
+                      ? "text-red-500 font-bold"
+                      : ""
+                  } w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none`}
+                >
+                  <option value="">Select Status</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+
+              {/* Top Picks Banner Upload */}
+              <div className="w-full">
+                <div className="w-full">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) =>
+                      setTopPicks({
+                        ...topPicks,
+                        topPicksBanner: e.target.files[0],
+                      })
+                    }
+                    className="hidden"
+                    id="topPicksBannerUpload"
+                  />
+                  <label
+                    htmlFor="topPicksBannerUpload"
+                    className="flex items-center justify-between border border-gray-300 leading-4 text-[#00000066] rounded cursor-pointer"
+                  >
+                    <span className="m-3 p-2 text-[16px] font-medium text-[#00000066]">
+                      {topPicks.topPicksBanner instanceof File
+                        ? topPicks.topPicksBanner.name
+                        : "Select Image"}
+                    </span>
+                    <div className="btn flex items-center justify-center w-[107px] p-5 rounded-[3px] rounded-tl-none rounded-bl-none bg-[#000000B2] text-white">
+                      Browse
+                    </div>
+                  </label>
+                </div>
+
+                {/* Preview Section */}
+                {topPicks.topPicksBanner && (
+                  <div className="relative mt-2 flex items-end justify-end">
+                    <img
+                      src={
+                        topPicks.topPicksBanner instanceof File
+                          ? URL.createObjectURL(topPicks.topPicksBanner)
+                          : topPicks.topPicksBanner // Old image URL
+                      }
+                      alt="Top Picks Banner"
+                      className="w-full object-cover rounded-lg border border-gray-300"
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setTopPicks({ ...topPicks, topPicksBanner: null })
+                      }
+                      className="absolute top-1 right-1 bg-red-500 text-white text-sm px-2 py-1 rounded-full"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex mt-8 md:mt-6 justify-end gap-6">
+              <button
+                type="button"
+                onClick={() => setShowTopPicksForm(false)}
+                className="px-4 py-2 leading-4 text-white bg-[#000000B2] rounded active:scale-[0.98]"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                className="px-4 py-2 text-white bg-[#076300] rounded active:scale-[0.98]"
+              >
+                Save
+              </button>
+
+              <Loader />
             </div>
           </form>
         </div>

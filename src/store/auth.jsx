@@ -102,7 +102,8 @@ export const AuthProvider = ({ children }) => {
     useState(false);
   const [showFAQForm, setShowFAQForm] = useState(false);
   const [showAdURLForm, setShowAdURLForm] = useState(false);
-  
+  const [showTopPicksForm, setShowTopPicksForm] = useState(false);
+
   return (
     <AuthContext.Provider
       value={{
@@ -246,6 +247,7 @@ export const AuthProvider = ({ children }) => {
         setShowSubscriptionForm,
         showChangeProjectPartnerForm,
         setShowChangeProjectPartnerForm,
+        showTopPicksForm, setShowTopPicksForm,
 
         showAdsManager,
         setShowAdsManager,

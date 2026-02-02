@@ -165,6 +165,8 @@ function Layout() {
     setShowFAQForm,
     showAdURLForm,
     setShowAdURLForm,
+    showTopPicksForm,
+    setShowTopPicksForm,
     isLoggedIn,
   } = useAuth();
 
@@ -234,6 +236,7 @@ function Layout() {
     },
     { state: showFAQForm, setter: setShowFAQForm },
     { state: showAdURLForm, setter: setShowAdURLForm },
+    { state: showTopPicksForm, setter: setShowTopPicksForm },
   ];
 
   const getNavLinkClass = (path) => {
