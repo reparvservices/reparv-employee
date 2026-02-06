@@ -49,6 +49,7 @@ import CallEnquirers from "./pages/CallEnquirers.jsx";
 import WhatsappEnquirers from "./pages/WhatsappEnquirers.jsx";
 import ContactUsMessages from "./pages/ContactUsMessages.jsx";
 import News from "./pages/News.jsx";
+import Subscribers from "./pages/Subscribers.jsx";
 
 const App = () => {
   const { URI, setLoading, user } = useAuth();
@@ -184,6 +185,7 @@ const App = () => {
     { name: "Blogs", menu: <Route path="/blogs" element={<Blogs />} /> },
     { name: "News", menu: <Route path="/news" element={<News />} /> },
     { name: "Trends", menu: <Route path="/trends" element={<Trends />} /> },
+    { name: "Subscribers", menu: <Route path="/subscribers" element={<Subscribers />} /> },
     {
       name: "Marketing Content",
       menu: <Route path="/marketing-content" element={<MarketingContent />} />,

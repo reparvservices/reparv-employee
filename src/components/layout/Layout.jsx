@@ -37,6 +37,7 @@ import { MdMessage } from "react-icons/md";
 import { RiCalendarScheduleLine } from "react-icons/ri";
 import { RiQuestionnaireFill } from "react-icons/ri";
 import { IoNewspaper } from "react-icons/io5";
+import { MdMarkEmailRead } from "react-icons/md";
 
 function Layout() {
   const location = useLocation();
@@ -363,6 +364,7 @@ function Layout() {
     { to: "/blogs", icon: <FaBloggerB size={21} />, label: "Blogs" },
     { to: "/news", icon: <IoNewspaper size={21} />, label: "News" },
     { to: "/trends", icon: <FaArrowTrendUp size={21} />, label: "Trends" },
+    { to: "/subscribers", icon: <MdMarkEmailRead size={21} />, label: "Subscribers" },
     {
       to: "/slider",
       icon: <TbLayoutSidebarRightCollapseFilled size={21} />,
