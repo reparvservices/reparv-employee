@@ -36,6 +36,7 @@ import { FaPhotoVideo } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
 import { RiCalendarScheduleLine } from "react-icons/ri";
 import { RiQuestionnaireFill } from "react-icons/ri";
+import { IoNewspaper } from "react-icons/io5";
 
 function Layout() {
   const location = useLocation();
@@ -167,6 +168,8 @@ function Layout() {
     setShowAdURLForm,
     showTopPicksForm,
     setShowTopPicksForm,
+    showNewsForm,
+    setShowNewsForm,
     isLoggedIn,
   } = useAuth();
 
@@ -237,6 +240,7 @@ function Layout() {
     { state: showFAQForm, setter: setShowFAQForm },
     { state: showAdURLForm, setter: setShowAdURLForm },
     { state: showTopPicksForm, setter: setShowTopPicksForm },
+    { state: showNewsForm, setter: setShowNewsForm },
   ];
 
   const getNavLinkClass = (path) => {
@@ -357,6 +361,7 @@ function Layout() {
     },
     { to: "/faqs", icon: <RiQuestionnaireFill size={21} />, label: "FAQs" },
     { to: "/blogs", icon: <FaBloggerB size={21} />, label: "Blogs" },
+    { to: "/news", icon: <IoNewspaper size={21} />, label: "News" },
     { to: "/trends", icon: <FaArrowTrendUp size={21} />, label: "Trends" },
     {
       to: "/slider",

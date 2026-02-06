@@ -48,6 +48,7 @@ import BlogFAQs from "./pages/BlogFAQ.jsx";
 import CallEnquirers from "./pages/CallEnquirers.jsx";
 import WhatsappEnquirers from "./pages/WhatsappEnquirers.jsx";
 import ContactUsMessages from "./pages/ContactUsMessages.jsx";
+import News from "./pages/News.jsx";
 
 const App = () => {
   const { URI, setLoading, user } = useAuth();
@@ -181,6 +182,7 @@ const App = () => {
     },
     { name: "FAQs", menu: <Route path="/faqs" element={<FAQs />} /> },
     { name: "Blogs", menu: <Route path="/blogs" element={<Blogs />} /> },
+    { name: "News", menu: <Route path="/news" element={<News />} /> },
     { name: "Trends", menu: <Route path="/trends" element={<Trends />} /> },
     {
       name: "Marketing Content",
