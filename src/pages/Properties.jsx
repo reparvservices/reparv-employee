@@ -2108,9 +2108,9 @@ const Properties = () => {
                   <div className="relative mb-3">
                     <img
                       onClick={() => {
-                        window.open(URI + videoUpload?.brochureFile, "_blank");
+                        window.open(getImageURI(videoUpload?.brochureFile), "_blank");
                       }}
-                      src={URI + videoUpload?.brochureFile}
+                      src={getImageURI(videoUpload?.brochureFile)}
                       alt="Old Image"
                       className="w-full max-w-[100px] object-cover rounded-lg border border-gray-300 cursor-pointer"
                     />
