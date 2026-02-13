@@ -13,6 +13,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 import { MdDone } from "react-icons/md";
 import DownloadCSV from "../components/DownloadCSV";
+import TagsInput from "../components/builder/TagsInput";
 
 const Builders = () => {
   const {
