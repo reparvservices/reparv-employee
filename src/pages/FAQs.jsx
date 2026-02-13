@@ -332,8 +332,12 @@ const FAQs = () => {
                   <option disabled value="">
                     Select Location
                   </option>
-                  <option value="Reparv Contact Us Page">
-                    Reparv Contact Us Page
+                  <option value="Reparv Home Page">Reparv Home Page</option>
+                  <option value="Reparv Buy New Property Page">
+                    Reparv Buy New Property Page
+                  </option>
+                  <option value="Reparv Buy Resale Property Page">
+                    Reparv Buy Resale Property Page
                   </option>
                   <option value="Reparv Blog Details Page">
                     Reparv Blog Details Page
