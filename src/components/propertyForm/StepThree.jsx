@@ -9,17 +9,19 @@ const StepThree = ({
   // Handle Image Upload with Validation
   const handleImageChange = (event, category) => {
     const files = Array.from(event.target.files);
-    const validFormats = ["image/jpeg", "image/jpg", "image/png"];
-    const maxSize = 500 * 1024; // 500 KB limit
+    const validFormats = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+    const maxSize = 2 * 1024 * 1024; // 2MB limit
 
     const validFiles = [];
     for (const file of files) {
       if (!validFormats.includes(file.type)) {
-        alert(`❌ Invalid file type: ${file.name}. Only JPG, JPEG, PNG allowed.`);
+        alert(
+          `❌ Invalid file type: ${file.name}. Only WEBP, JPG, JPEG, PNG allowed.`,
+        );
         continue;
       }
       if (file.size > maxSize) {
-        alert(`⚠️ File too large: ${file.name}. Must be under 500KB.`);
+        alert(`⚠️ File too large: ${file.name}. Must be under 2MB.`);
         continue;
       }
       validFiles.push(file);
@@ -53,7 +55,12 @@ const StepThree = ({
   };
 
   // Reusable Image Upload UI
-  const renderUploadSection = (category, label, required = false, hidden = false) => {
+  const renderUploadSection = (
+    category,
+    label,
+    required = false,
+    hidden = false,
+  ) => {
     if (hidden) return null;
     return (
       <div className="w-full">
@@ -63,7 +70,7 @@ const StepThree = ({
         <div className="w-full mt-2">
           <input
             type="file"
-            accept="image/jpeg,image/png,image/jpg"
+            accept="image/jpeg,image/png,image/jpg,image/webp"
             multiple
             onChange={(e) => handleImageChange(e, category)}
             className="hidden"
@@ -112,7 +119,7 @@ const StepThree = ({
     <div className="bg-white h-[55vh] overflow-scroll scrollbar-x-hidden p-2">
       <div className="flex items-center justify-between text-base font-semibold mb-4">
         Step 3: Upload Property Images{" "}
-        <span className="text-red-600 text-xs">(Maximum Image Size 500KB)</span>
+        <span className="text-red-600 text-xs">(Maximum Image Size 2MB)</span>
       </div>
 
       <div className="grid gap-6 md:gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
@@ -124,43 +131,61 @@ const StepThree = ({
           "sideView",
           "Side View",
           false,
-          ["CommercialPlot", "NewPlot", "FarmLand"].includes(newProperty.propertyCategory)
+          ["CommercialPlot", "NewPlot", "FarmLand"].includes(
+            newProperty.propertyCategory,
+          ),
         )}
         {renderUploadSection(
           "hallView",
           "Hall View",
           false,
-          ["CommercialPlot", "NewPlot", "FarmLand"].includes(newProperty.propertyCategory)
+          ["CommercialPlot", "NewPlot", "FarmLand"].includes(
+            newProperty.propertyCategory,
+          ),
         )}
         {renderUploadSection(
           "kitchenView",
           "Kitchen View",
           false,
-          ["CommercialPlot", "NewPlot", "FarmLand", "IndustrialSpace", "RentalShop"].includes(
-            newProperty.propertyCategory
-          )
+          [
+            "CommercialPlot",
+            "NewPlot",
+            "FarmLand",
+            "IndustrialSpace",
+            "RentalShop",
+          ].includes(newProperty.propertyCategory),
         )}
         {renderUploadSection(
           "bedroomView",
           "Bedroom View",
           false,
-          ["CommercialPlot", "NewPlot", "FarmLand", "IndustrialSpace", "RentalShop"].includes(
-            newProperty.propertyCategory
-          )
+          [
+            "CommercialPlot",
+            "NewPlot",
+            "FarmLand",
+            "IndustrialSpace",
+            "RentalShop",
+          ].includes(newProperty.propertyCategory),
         )}
         {renderUploadSection(
           "bathroomView",
           "Bathroom View",
           false,
-          ["CommercialPlot", "NewPlot", "FarmLand", "IndustrialSpace", "RentalShop"].includes(
-            newProperty.propertyCategory
-          )
+          [
+            "CommercialPlot",
+            "NewPlot",
+            "FarmLand",
+            "IndustrialSpace",
+            "RentalShop",
+          ].includes(newProperty.propertyCategory),
         )}
         {renderUploadSection(
           "balconyView",
           "Balcony View",
           false,
-          ["CommercialPlot", "NewPlot", "FarmLand"].includes(newProperty.propertyCategory)
+          ["CommercialPlot", "NewPlot", "FarmLand"].includes(
+            newProperty.propertyCategory,
+          ),
         )}
       </div>
     </div>
