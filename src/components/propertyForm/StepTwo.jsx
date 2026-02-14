@@ -3,6 +3,7 @@ import PropertyTypeMultiSelect from "./PropertyTypeMultiSelect";
 
 const StepTwo = ({ newProperty, setPropertyData }) => {
   const [isRental, setIsRental] = useState(false);
+  const [isPlot, setIsPlot] = useState(false);
 
   useEffect(() => {
     const isRentalType = [
@@ -17,6 +18,14 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
     ].includes(newProperty?.propertyCategory);
 
     setIsRental(isRentalType);
+  }, [newProperty?.propertyCategory]);
+
+  useEffect(() => {
+    const isPlotType = ["NewPlot", "CommercialPlot", "RentalLand"].includes(
+      newProperty?.propertyCategory,
+    );
+
+    setIsPlot(isPlotType);
   }, [newProperty?.propertyCategory]);
 
   return (
@@ -46,7 +55,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           />
         </div>
 
-        <div className={`${isRental ? "hidden" : "block"} w-full`}>
+        <div className={`${isPlot || isRental ? "hidden" : "block"} w-full`}>
           <label
             className={`${
               newProperty.builtYear ? "text-green-600" : "text-[#00000066]"
@@ -56,7 +65,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.builtYear}
             onChange={(e) =>
               setPropertyData({
@@ -68,7 +77,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
             <option value="">Select Year</option>
             {Array.from(
               { length: new Date().getFullYear() - 1990 + 1 },
-              (_, i) => 1990 + i
+              (_, i) => 1990 + i,
             )
               .reverse()
               .map((year) => (
@@ -89,7 +98,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.ownershipType}
             onChange={(e) =>
               setPropertyData({ ...newProperty, ownershipType: e.target.value })
@@ -120,7 +129,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
             type="number"
             required
             placeholder="Enter Area in Sq.Ft."
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 placeholder:text-black"
             value={newProperty.builtUpArea}
             onChange={(e) =>
               setPropertyData({
@@ -153,7 +162,8 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
             }
           />
         </div>
-        <div className="w-full">
+
+        <div className={`${isPlot ? "hidden" : "block"} w-full`}>
           <label
             className={`${
               newProperty.parkingAvailability
@@ -179,7 +189,8 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
             <option value="No">NO</option>
           </select>
         </div>
-        <div className="w-full ">
+
+        <div className={`${isPlot ? "hidden" : "block"} w-full`}>
           <label
             className={`${
               newProperty.totalFloors ? "text-green-600" : "text-[#00000066]"
@@ -191,7 +202,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
             type="number"
             required
             placeholder="Total No of Floors"
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 placeholder:text-black"
             value={newProperty.totalFloors}
             onChange={(e) =>
               setPropertyData({
@@ -202,7 +213,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           />
         </div>
 
-        <div className="w-full ">
+        <div className={`${isPlot ? "hidden" : "block"} w-full`}>
           <label
             className={`${
               newProperty.floorNo ? "text-green-600" : "text-[#00000066]"
@@ -214,7 +225,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
             type="number"
             required
             placeholder="Enter Floor No."
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 placeholder:text-black"
             value={newProperty.floorNo}
             onChange={(e) => {
               setPropertyData({ ...newProperty, floorNo: e.target.value });
@@ -233,7 +244,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
             Loan Availability <span className="text-red-600">*</span>
           </label>
           <select
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none bg-transparent"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none bg-transparent placeholder:text-black"
             style={{ backgroundImage: "none" }}
             value={newProperty.loanAvailability}
             onChange={(e) =>
@@ -248,6 +259,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
             <option value="No">NO</option>
           </select>
         </div>
+
         <div className="w-full">
           <label
             className={`${
@@ -258,7 +270,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.propertyFacing}
             onChange={(e) =>
               setPropertyData({
@@ -310,7 +322,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           <input
             type="text"
             placeholder="Enter Rera No."
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.reraRegistered}
             onChange={(e) => {
               setPropertyData({
@@ -321,7 +333,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           />
         </div>
 
-        <div className="w-full">
+        <div className={`${isPlot ? "hidden" : "block"} w-full`}>
           <label
             className={`${
               newProperty.furnishing ? "text-green-600" : "text-[#00000066]"
@@ -331,7 +343,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.furnishing}
             onChange={(e) => {
               setPropertyData({ ...newProperty, furnishing: e.target.value });
@@ -354,7 +366,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.waterSupply}
             onChange={(e) => {
               setPropertyData({ ...newProperty, waterSupply: e.target.value });
@@ -380,7 +392,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.powerBackup}
             onChange={(e) => {
               setPropertyData({ ...newProperty, powerBackup: e.target.value });
@@ -409,12 +421,16 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
       </div>
 
       {/* Property Features And Benefits */}
-      <h2 className="text-base font-semibold mt-6 mb-2">
+      <h2
+        className={`${isPlot ? "hidden" : "block"} text-base font-semibold mt-6 mb-2`}
+      >
         Step 2: Property Features
       </h2>
 
       {/* Property Features */}
-      <div className="grid gap-6 md:gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+      <div
+        className={`${isPlot ? "hidden" : "block"} grid gap-6 md:gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3`}
+      >
         <div className={`${isRental ? "hidden" : "block"} w-full`}>
           <label
             className={`${
@@ -427,7 +443,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.locationFeature}
             onChange={(e) => {
               setPropertyData({
@@ -472,7 +488,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
             type="text"
             required
             placeholder="Enter Feature Here."
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 placeholder:text-black"
             value={newProperty.sizeAreaFeature}
             onChange={(e) => {
               setPropertyData({
@@ -483,7 +499,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           />
         </div>
 
-        <div className="w-full">
+        <div className={`${isPlot ? "hidden" : "block"} w-full`}>
           <label
             className={`${
               newProperty.parkingFeature ? "text-green-600" : "text-[#00000066]"
@@ -493,7 +509,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.parkingFeature}
             onChange={(e) => {
               setPropertyData({
@@ -526,7 +542,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.terraceFeature}
             onChange={(e) => {
               setPropertyData({
@@ -548,6 +564,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
             <option>Highway Facing</option>
           </select>
         </div>
+
         <div className={`${isRental ? "hidden" : "block"} w-full`}>
           <label
             className={`${
@@ -562,7 +579,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
             type="text"
             required
             placeholder="Enter Feature Here"
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.ageOfPropertyFeature}
             onChange={(e) => {
               setPropertyData({
@@ -576,7 +593,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
         <div className="w-full">
           <label
             className={`${
-              newProperty.amenitiesFeaturee
+              newProperty.amenitiesFeature
                 ? "text-green-600"
                 : "text-[#00000066]"
             } block text-sm leading-4 font-medium`}
@@ -585,7 +602,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.amenitiesFeature}
             onChange={(e) => {
               setPropertyData({
@@ -624,7 +641,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.propertyStatusFeature}
             onChange={(e) =>
               setPropertyData({
@@ -655,7 +672,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.smartHomeFeature}
             onChange={(e) => {
               setPropertyData({
@@ -700,7 +717,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
 
       {/* Property Features And Benefits */}
       <h2 className="text-base font-semibold mt-6 mb-2">
-        Step 3: Property Benefits
+        {isPlot ? "Step 2: " : "Step 3: "} Property Benefits
       </h2>
 
       {/* Property Features */}
@@ -717,7 +734,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.securityBenefit}
             onChange={(e) => {
               setPropertyData({
@@ -747,7 +764,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.primeLocationBenefit}
             onChange={(e) => {
               setPropertyData({
@@ -780,7 +797,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600 appearance-none placeholder:text-black"
             value={newProperty.rentalIncomeBenefit}
             onChange={(e) => {
               setPropertyData({
@@ -821,7 +838,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600  appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600  appearance-none placeholder:text-black"
             value={newProperty.qualityBenefit}
             onChange={(e) => {
               setPropertyData({
@@ -851,7 +868,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600  appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600  appearance-none placeholder:text-black"
             value={newProperty.capitalAppreciationBenefit}
             onChange={(e) => {
               setPropertyData({
@@ -886,7 +903,7 @@ const StepTwo = ({ newProperty, setPropertyData }) => {
           </label>
           <select
             required
-            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600  appearance-none"
+            className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-green-600  appearance-none placeholder:text-black"
             value={newProperty.ecofriendlyBenefit}
             onChange={(e) => {
               setPropertyData({
