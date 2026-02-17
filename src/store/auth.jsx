@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   const [accessToken, setAccessToken] = useState(Cookies.get("accessToken"));
   const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("employeeUser"))
+    JSON.parse(localStorage.getItem("employeeUser")),
   );
   const [loading, setLoading] = useState(false);
 
@@ -81,6 +81,7 @@ export const AuthProvider = ({ children }) => {
   const [partnerPaymentStatus, setPartnerPaymentStatus] = useState("Unpaid");
   const [showEMIForm, setShowEMIForm] = useState(false);
   const [filterStatus, setFilterStatus] = useState("New");
+  const [loanApproved, setLoanApproved] = useState("In Progress");
   const [showEMI, setShowEMI] = useState(false);
   const [enquiryFilter, setEnquiryFilter] = useState("New");
   const [showContentUploadForm, setShowContentUploadForm] = useState(false);
@@ -252,6 +253,8 @@ export const AuthProvider = ({ children }) => {
         setShowTopPicksForm,
         showNewsForm,
         setShowNewsForm,
+        loanApproved,
+        setLoanApproved,
 
         showAdsManager,
         setShowAdsManager,
