@@ -1747,12 +1747,8 @@ const Properties = () => {
           <option value="update">Update</option>
           <option value="delete">Delete</option>
           <option value="approve">Approve</option>
+          <option value="hotdeal">Set Hot Deal</option>
 
-          {user?.projectpartnerid ? (
-            <></>
-          ) : (
-            <option value="hotdeal">Set Hot Deal</option>
-          )}
           {user?.projectpartnerid ? (
             <></>
           ) : (
