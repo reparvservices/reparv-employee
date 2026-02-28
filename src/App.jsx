@@ -27,7 +27,7 @@ import Slider from "./pages/Slider.jsx";
 import Testimonial from "./pages/Testimonial.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import OnBoardingPartner from "./pages/OnBoardingPartner.jsx";
-import ProjectPartner from "./pages/projectPartner.jsx";
+import ProjectPartner from "./pages/ProjectPartner.jsx";
 import TerritoryPartner from "./pages/TerritoryPartner.jsx";
 import GuestUser from "./pages/guestUser.jsx";
 import Blogs from "./pages/Blogs.jsx";
