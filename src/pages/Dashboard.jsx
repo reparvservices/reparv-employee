@@ -7,6 +7,7 @@ import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuth } from "../store/auth";
+import { FaEye, FaHeart, FaShareAlt } from "react-icons/fa";
 
 function Dashboard() {
   const { URI, user } = useAuth();
@@ -14,25 +15,61 @@ function Dashboard() {
   const [overviewData, setOverviewData] = useState([]);
   const [overviewCountData, setOverviewCountData] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
+  
+  const formatNumber = (num) => {
+    if (!num) return 0;
 
+    if (num >= 10000000) return (num / 10000000).toFixed(1) + "Cr"; // Crore
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M"; // Million
+    if (num >= 100000) return (num / 100000).toFixed(1) + "L"; // Lakh
+    if (num >= 1000) return (num / 1000).toFixed(1) + "K"; // Thousand
+
+    return num;
+  };
+  
   const menus = [
+    {
+      label: "Properties",
+      value: overviewCountData?.totalProperty || "00",
+      to: "/properties",
+      analytics: {
+        views: overviewCountData?.propertyViews || 0,
+        likes: overviewCountData?.propertyLikes || 0,
+        shares: overviewCountData?.propertyShares || 0,
+      },
+    },
+    {
+      label: "Blogs",
+      value: overviewCountData?.totalBlog || "00",
+      to: "/blogs",
+      analytics: {
+        views: overviewCountData?.blogViews || 0,
+        likes: overviewCountData?.blogLikes || 0,
+        shares: overviewCountData?.blogShares || 0,
+      },
+    },
+    {
+      label: "News",
+      value: overviewCountData?.totalNews || "00",
+      to: "/news",
+      analytics: {
+        views: overviewCountData?.newsViews || 0,
+        likes: overviewCountData?.newsLikes || 0,
+        shares: overviewCountData?.newsShares || 0,
+      },
+    },
     {
       label: "Enquirers",
       value: overviewCountData?.totalEnquiry || "00",
       //icon: card4,
       to: "/enquirers",
     },
+
     {
       label: "Customers",
       value: overviewCountData?.totalCustomer || "00",
       //icon: card2,
       to: "/customers",
-    },
-    {
-      label: "Properties",
-      value: overviewCountData?.totalProperty || "00",
-      //icon: card4,
-      to: "/properties",
     },
     {
       label: "Builders",
@@ -77,12 +114,6 @@ function Dashboard() {
       to: "/guest-users",
     },
     {
-      label: "Blogs",
-      value: overviewCountData?.totalBlog || "00",
-      //icon: card4,
-      to: "/blogs",
-    },
-    {
       label: "Tickets",
       value: overviewCountData?.totalTicket || "00",
       //icon: card4,
@@ -92,13 +123,16 @@ function Dashboard() {
 
   const fetchCountData = async () => {
     try {
-      const response = await fetch(`${URI}/${user?.projectpartnerid ? "employee":"admin"}/dashboard/count`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${URI}/${user?.projectpartnerid ? "employee" : "admin"}/dashboard/count`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
       if (!response.ok) throw new Error("Failed to fetch Count.");
       const data = await response.json();
       //console.log(data);
@@ -121,21 +155,45 @@ function Dashboard() {
             <div
               key={index}
               onClick={() => navigate(card.to)}
-              className="overview-card w-full max-w-[190px] sm:max-w-[290px] flex flex-col items-center justify-center gap-2 rounded-lg sm:rounded-[16px] p-4 sm:p-6 border-2 hover:border-[#0BB501] bg-white cursor-pointer"
+              className={`overview-card w-full max-w-[190px] sm:max-w-[290px] flex flex-col items-center justify-center gap-1 rounded-lg sm:rounded-[16px] border-2 hover:border-[#0BB501] bg-white cursor-pointer transition
+                          ${card.analytics ? "py-[10px]" : "py-4 sm:py-6"} px-4 sm:px-6`}
             >
-              <div className="upside w-full sm:max-w-[224px] h-[30px] sm:h-[40px] flex items-center justify-between gap-2 sm:gap-3 text-xs sm:text-base font-semibold ">
+              {/* Title + Count */}
+              <div className="w-full flex items-center justify-between font-semibold">
                 <p>{card.label}</p>
-                <p className="flex items-center justify-center text-xl">
+
+                <p className="flex items-center text-xl">
                   {[
                     "Total Deal Amount",
                     "Reparv Share",
                     "Total Share",
                     "Sales Share",
                     "Territory Share",
-                  ].includes(card.label) && <FaRupeeSign />}
+                  ].includes(card.label) && <FaRupeeSign className="mr-1" />}
                   {card.value}
                 </p>
               </div>
+
+              {/* Analytics */}
+              {/* Analytics */}
+            {card.analytics && (
+              <div className="flex items-center justify-between w-full text-sm text-gray-600 font-medium border-t pt-1">
+                <div className="flex items-center gap-1">
+                  <FaEye className="text-blue-500" />
+                  {formatNumber(card.analytics.views)}
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <FaHeart className="text-red-500" />
+                  {formatNumber(card.analytics.likes)}
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <FaShareAlt className="text-green-500" />
+                  {formatNumber(card.analytics.shares)}
+                </div>
+              </div>
+            )}{" "}
             </div>
           ))}
       </div>
