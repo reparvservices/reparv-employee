@@ -7,7 +7,14 @@ import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuth } from "../store/auth";
-import { FaEye, FaHeart, FaShareAlt } from "react-icons/fa";
+import {
+  FaEye,
+  FaHeart,
+  FaPhoneAlt,
+  FaWhatsapp,
+  FaShareAlt,
+} from "react-icons/fa";
+import { formatNumber } from "../utils/formatNumber";
 
 function Dashboard() {
   const { URI, user } = useAuth();
@@ -15,18 +22,7 @@ function Dashboard() {
   const [overviewData, setOverviewData] = useState([]);
   const [overviewCountData, setOverviewCountData] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
-  
-  const formatNumber = (num) => {
-    if (!num) return 0;
 
-    if (num >= 10000000) return (num / 10000000).toFixed(1) + "Cr"; // Crore
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M"; // Million
-    if (num >= 100000) return (num / 100000).toFixed(1) + "L"; // Lakh
-    if (num >= 1000) return (num / 1000).toFixed(1) + "K"; // Thousand
-
-    return num;
-  };
-  
   const menus = [
     {
       label: "Properties",
@@ -63,6 +59,10 @@ function Dashboard() {
       value: overviewCountData?.totalEnquiry || "00",
       //icon: card4,
       to: "/enquirers",
+      analytics: {
+        call_enquirers: overviewCountData?.call_enquirers || 0,
+        whatsapp_enquirers: overviewCountData?.whatsapp_enquirers || 0,
+      },
     },
 
     {
@@ -88,12 +88,6 @@ function Dashboard() {
       value: overviewCountData?.totalProjectPartner || "00",
       // icon: card4,
       to: "/projectpartner",
-    },
-    {
-      label: "Onboarding Partners",
-      value: overviewCountData?.totalOnboardingPartner || "00",
-      //icon: card4,
-      to: "/onboardingpartner",
     },
     {
       label: "Sales Persons",
@@ -173,27 +167,25 @@ function Dashboard() {
                   {card.value}
                 </p>
               </div>
-
               {/* Analytics */}
-              {/* Analytics */}
-            {card.analytics && (
-              <div className="flex items-center justify-between w-full text-sm text-gray-600 font-medium border-t pt-1">
-                <div className="flex items-center gap-1">
-                  <FaEye className="text-blue-500" />
-                  {formatNumber(card.analytics.views)}
-                </div>
+              {card.analytics && (
+                <div className="flex items-center justify-between w-full text-sm text-gray-600 font-medium border-t pt-1">
+                  <div className="flex items-center gap-1">
+                    <FaEye className="text-blue-500" />
+                    {formatNumber(card.analytics.views)}
+                  </div>
 
-                <div className="flex items-center gap-1">
-                  <FaHeart className="text-red-500" />
-                  {formatNumber(card.analytics.likes)}
-                </div>
+                  <div className="flex items-center gap-1">
+                    <FaHeart className="text-red-500" />
+                    {formatNumber(card.analytics.likes)}
+                  </div>
 
-                <div className="flex items-center gap-1">
-                  <FaShareAlt className="text-green-500" />
-                  {formatNumber(card.analytics.shares)}
+                  <div className="flex items-center gap-1">
+                    <FaShareAlt className="text-green-500" />
+                    {formatNumber(card.analytics.shares)}
+                  </div>
                 </div>
-              </div>
-            )}{" "}
+              )}{" "}
             </div>
           ))}
       </div>
