@@ -116,6 +116,21 @@ const StepOne = ({
     }
   }, [newProperty.propertyName]);
 
+  useEffect(() => {
+      if (!newProperty?.propertyCategory) return;
+  
+      const category = newProperty.propertyCategory;
+  
+      if (category.startsWith("New")) {
+        setPropertyTab("new");
+      } else if (category.startsWith("Rental")) {
+        setPropertyTab("rental");
+      } else if (category.startsWith("Resale")) {
+        setPropertyTab("resale");
+      }
+    }, [newProperty?.propertyCategory]);
+  
+
   return (
     <div className="bg-white h-[55vh] overflow-scroll scrollbar-x-hidden p-2">
       <h2 className="text-lg font-semibold mb-4">Step 1: Property Details</h2>
