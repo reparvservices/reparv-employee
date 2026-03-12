@@ -15,6 +15,7 @@ import PartnerFilter from "../components/PartnerFilter";
 import { RxCross2 } from "react-icons/rx";
 import { MdDone } from "react-icons/md";
 import DownloadCSV from "../components/DownloadCSV";
+import PaymentUpdateModal from "../components/PaymentUpdateModal";
 
 const TerritoryPartner = () => {
   const {
@@ -40,7 +41,7 @@ const TerritoryPartner = () => {
   const [partnerId, setPartnerId] = useState(null);
   const [partner, setPartner] = useState({});
   const [selectedPartnerLister, setSelectedPartnerLister] = useState(
-    "Select Partner Lister"
+    "Select Partner Lister",
   );
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -53,11 +54,6 @@ const TerritoryPartner = () => {
     state: "",
     city: "",
     intrest: "",
-  });
-
-  const [payment, setPayment] = useState({
-    amount: "",
-    paymentid: "",
   });
 
   const [followUp, setFollowUp] = useState("");
@@ -154,7 +150,7 @@ const TerritoryPartner = () => {
         alert(
           newPartner.id
             ? "Partner updated successfully!"
-            : "Partner added successfully!"
+            : "Partner added successfully!",
         );
 
         setNewPartner({
@@ -231,7 +227,7 @@ const TerritoryPartner = () => {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       const data = await response.json();
@@ -262,7 +258,7 @@ const TerritoryPartner = () => {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       const data = await response.json();
       console.log(response);
@@ -277,36 +273,33 @@ const TerritoryPartner = () => {
     }
   };
 
-  // Update Payment ID
-  const updatePaymentId = async (e) => {
-    e.preventDefault();
-
+  const updatePaymentId = async (partnerId, formData) => {
     try {
       setLoading(true);
+
       const response = await fetch(
-        URI + `/admin/territorypartner/update/paymentid/${partnerId}`,
+        URI + `/admin/territorypartner/update-payment/${partnerId}`,
         {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          method: "POST",
           credentials: "include",
-          body: JSON.stringify(payment),
-        }
+          body: formData,
+        },
       );
+
       const data = await response.json();
-      console.log(response);
+
       if (response.ok) {
         alert(`Success: ${data.message}`);
       } else {
         alert(`Error: ${data.message}`);
       }
-      setPartnerId(null);
 
+      setPartnerId(null);
       setShowPaymentIdForm(false);
+
       fetchData();
     } catch (error) {
-      console.error("Error deleting :", error);
+      console.error("Error updating payment:", error);
     } finally {
       setLoading(false);
     }
@@ -323,7 +316,7 @@ const TerritoryPartner = () => {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       if (!response.ok) throw new Error("Failed to fetch follow up list.");
       const data = await response.json();
@@ -349,7 +342,7 @@ const TerritoryPartner = () => {
           },
           credentials: "include",
           body: JSON.stringify({ followUp, followUpText }),
-        }
+        },
       );
 
       const data = await response.json();
@@ -392,7 +385,7 @@ const TerritoryPartner = () => {
           },
           credentials: "include",
           body: JSON.stringify({ username, password }),
-        }
+        },
       );
       const data = await response.json();
       console.log(response);
@@ -444,7 +437,7 @@ const TerritoryPartner = () => {
         }
         return acc;
       },
-      { Unpaid: 0, FollowUp: 0, Paid: 0, Free: 0 }
+      { Unpaid: 0, FollowUp: 0, Paid: 0, Free: 0 },
     );
   };
 
@@ -475,7 +468,7 @@ const TerritoryPartner = () => {
     const itemDate = parse(
       item.created_at,
       "dd MMM yyyy | hh:mm a",
-      new Date()
+      new Date(),
     );
 
     const matchesDate =
@@ -738,8 +731,12 @@ const TerritoryPartner = () => {
       className={`sales Persons overflow-scroll scrollbar-hide w-full h-screen flex flex-col items-start justify-start`}
     >
       <div className="sales-table w-full h-[80vh] flex flex-col px-4 md:px-6 py-6 gap-4 my-[10px] bg-white md:rounded-[24px]">
-        <div className={`w-full flex items-center ${user?.projectpartnerid ? "justify-end" : "justify-between"} gap-1 sm:gap-3`}>
-          <div className={`${user?.projectpartnerid && "hidden"} w-[65%] sm:min-w-[220px] sm:max-w-[230px] relative inline-block`}>
+        <div
+          className={`w-full flex items-center ${user?.projectpartnerid ? "justify-end" : "justify-between"} gap-1 sm:gap-3`}
+        >
+          <div
+            className={`${user?.projectpartnerid && "hidden"} w-[65%] sm:min-w-[220px] sm:max-w-[230px] relative inline-block`}
+          >
             <div className="flex gap-2 items-center justify-between bg-white border border-[#00000033] text-sm font-semibold  text-black rounded-lg py-1 px-3 focus:outline-none focus:ring-2 focus:ring-[#076300]">
               <span>{selectedPartnerLister || "Select Partner Lister"}</span>
               <RiArrowDropDownLine className="w-6 h-6 text-[#000000B2]" />
@@ -1005,73 +1002,13 @@ const TerritoryPartner = () => {
       </div>
 
       {/* Update Payment Id Form */}
-      <div
-        className={` ${
-          !showPaymentIdForm && "hidden"
-        }  z-[61] overflow-scroll scrollbar-hide flex fixed`}
-      >
-        <div className="w-[330px] h-[380px] sm:w-[600px] sm:h-[400px] overflow-scroll scrollbar-hide md:w-[500px] lg:w-[700px] lg:h-[300px] bg-white py-8 pb-16 px-3 sm:px-6 border border-[#cfcfcf33] rounded-lg">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-[16px] font-semibold">Payment Details</h2>
-            <IoMdClose
-              onClick={() => {
-                setShowPaymentIdForm(false);
-              }}
-              className="w-6 h-6 cursor-pointer"
-            />
-          </div>
-          <form onSubmit={updatePaymentId}>
-            <div className="w-full grid gap-4 place-items-center grid-cols-1 lg:grid-cols-2">
-              <input
-                type="hidden"
-                value={partnerId || ""}
-                onChange={(e) => {
-                  setPartnerId(e.target.value);
-                }}
-              />
-              <div className="w-full">
-                <label className="block text-sm leading-4 text-[#00000066] font-medium">
-                  Payment Amount
-                </label>
-                <input
-                  type="number"
-                  required
-                  placeholder="Enter Amount"
-                  className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={payment.amount}
-                  onChange={(e) => {
-                    setPayment({ ...payment, amount: e.target.value });
-                  }}
-                />
-              </div>
-              <div className="w-full">
-                <label className="block text-sm leading-4 text-[#00000066] font-medium">
-                  Payment ID
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Enter Payment ID"
-                  className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={payment.paymentid}
-                  onChange={(e) => {
-                    setPayment({ ...payment, paymentid: e.target.value });
-                  }}
-                />
-              </div>
-            </div>
-            <div className="flex h-10 mt-8 md:mt-6 justify-center sm:justify-end gap-6">
-              <button
-                type="submit"
-                className="px-4 py-2 text-white bg-[#076300] rounded active:scale-[0.98]"
-              >
-                Update Payment ID
-              </button>
-              <Loader></Loader>
-            </div>
-          </form>
-        </div>
-      </div>
+      <PaymentUpdateModal
+        show={showPaymentIdForm}
+        setShow={setShowPaymentIdForm}
+        partnerId={partnerId}
+        partnerType="Territory Partner"
+        updatePaymentId={updatePaymentId}
+      />
 
       {/* Update Payment Id Form */}
       <div
@@ -1173,37 +1110,43 @@ const TerritoryPartner = () => {
                           followUp?.followUp === "CNR4"
                             ? "bg-red-100 text-red-600"
                             : followUp?.followUp === "Switch Off"
-                            ? "bg-red-100 text-red-700"
-                            : followUp?.followUp === "Call Busy" ||
-                              followUp?.followUp === "Call Back" ||
-                              followUp?.followUp ===
-                                "Not Responding (After Follow Up)"
-                            ? "bg-yellow-100 text-yellow-600"
-                            : followUp?.followUp ===
-                                "Call Cut / Disconnected" ||
-                              followUp?.followUp ===
-                                "Not Interested (After Details Shared & Explanation)"
-                            ? "bg-orange-100 text-orange-600"
-                            : followUp?.followUp === "Invalid Number" ||
-                              followUp?.followUp === "Wrong Number"
-                            ? "bg-red-100 text-red-700"
-                            : followUp?.followUp === "Form Filled By Mistake"
-                            ? "bg-blue-100 text-blue-600"
-                            : followUp?.followUp === "Repeat Lead"
-                            ? "bg-gray-100 text-gray-600"
-                            : followUp?.followUp === "Lead Clash"
-                            ? "bg-purple-100 text-purple-500"
-                            : followUp?.followUp === "Details Shared"
-                            ? "bg-green-100 text-green-600"
-                            : followUp?.followUp === "Not Interested"
-                            ? "bg-pink-100 text-pink-600"
-                            : followUp?.followUp === "Interested"
-                            ? "bg-green-100 text-green-700"
-                            : followUp?.followUp === "Documents Collected"
-                            ? "bg-green-100 text-green-800"
-                            : followUp?.followUp === "Payment Done"
-                            ? "bg-green-100 text-green-900"
-                            : "bg-gray-100 text-black"
+                              ? "bg-red-100 text-red-700"
+                              : followUp?.followUp === "Call Busy" ||
+                                  followUp?.followUp === "Call Back" ||
+                                  followUp?.followUp ===
+                                    "Not Responding (After Follow Up)"
+                                ? "bg-yellow-100 text-yellow-600"
+                                : followUp?.followUp ===
+                                      "Call Cut / Disconnected" ||
+                                    followUp?.followUp ===
+                                      "Not Interested (After Details Shared & Explanation)"
+                                  ? "bg-orange-100 text-orange-600"
+                                  : followUp?.followUp === "Invalid Number" ||
+                                      followUp?.followUp === "Wrong Number"
+                                    ? "bg-red-100 text-red-700"
+                                    : followUp?.followUp ===
+                                        "Form Filled By Mistake"
+                                      ? "bg-blue-100 text-blue-600"
+                                      : followUp?.followUp === "Repeat Lead"
+                                        ? "bg-gray-100 text-gray-600"
+                                        : followUp?.followUp === "Lead Clash"
+                                          ? "bg-purple-100 text-purple-500"
+                                          : followUp?.followUp ===
+                                              "Details Shared"
+                                            ? "bg-green-100 text-green-600"
+                                            : followUp?.followUp ===
+                                                "Not Interested"
+                                              ? "bg-pink-100 text-pink-600"
+                                              : followUp?.followUp ===
+                                                  "Interested"
+                                                ? "bg-green-100 text-green-700"
+                                                : followUp?.followUp ===
+                                                    "Documents Collected"
+                                                  ? "bg-green-100 text-green-800"
+                                                  : followUp?.followUp ===
+                                                      "Payment Done"
+                                                    ? "bg-green-100 text-green-900"
+                                                    : "bg-gray-100 text-black"
                         }`}
                       >
                         {" "}
@@ -1389,6 +1332,99 @@ const TerritoryPartner = () => {
                 readOnly
               />
             </div>
+            {/* Subscription Details */}
+
+            <div className="lg:col-span-2 mt-4">
+              <h3 className="text-[15px] font-semibold mb-2 border-b pb-2">
+                Subscription Details
+              </h3>
+            </div>
+
+            {/* Subscription Start Date */}
+            <div className={`${partner.start_date ? "block" : "hidden"}`}>
+              <label className="block text-sm leading-4 text-[#00000066] font-medium">
+                Subscription Start Date
+              </label>
+
+              <input
+                type="text"
+                disabled
+                className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px]"
+                value={
+                  partner.start_date
+                    ? new Date(partner.start_date).toLocaleDateString()
+                    : ""
+                }
+                readOnly
+              />
+            </div>
+
+            {/* Subscription End Date */}
+            <div className={`${partner.end_date ? "block" : "hidden"}`}>
+              <label className="block text-sm leading-4 text-[#00000066] font-medium">
+                Subscription End Date
+              </label>
+
+              <input
+                type="text"
+                disabled
+                className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px]"
+                value={
+                  partner.end_date
+                    ? new Date(partner.end_date).toLocaleDateString()
+                    : ""
+                }
+                readOnly
+              />
+            </div>
+
+            {/* Mode */}
+            <div className={`${partner.mode ? "block" : "hidden"}`}>
+              <label className="block text-sm leading-4 text-[#00000066] font-medium">
+                Subscription Mode
+              </label>
+
+              <input
+                type="text"
+                disabled
+                className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px]"
+                value={partner.mode}
+                readOnly
+              />
+            </div>
+
+            {/* Payment Type */}
+            <div className={`${partner.payment_type ? "block" : "hidden"}`}>
+              <label className="block text-sm leading-4 text-[#00000066] font-medium">
+                Payment Type
+              </label>
+
+              <input
+                type="text"
+                disabled
+                className="w-full mt-[10px] text-[16px] font-medium p-4 border border-[#00000033] rounded-[4px]"
+                value={partner.payment_type}
+                readOnly
+              />
+            </div>
+
+            {/* Payment Screenshot */}
+            <div
+              className={`lg:col-span-2 ${partner.screenshot ? "block" : "hidden"}`}
+            >
+              <label className="block text-sm leading-4 text-[#00000066] font-medium">
+                Payment Screenshot
+              </label>
+
+              <div className="mt-3">
+                <img
+                  src={partner.screenshot}
+                  alt="Payment Screenshot"
+                  onClick={() => window.open(partner.screenshot, "_blank")}
+                  className="w-[200px] border border-[#00000033] rounded cursor-pointer"
+                />
+              </div>
+            </div>
             <div
               className={`${partner.paymentid === null ? "hidden" : "block"}`}
             >
@@ -1427,7 +1463,7 @@ const TerritoryPartner = () => {
                 readOnly
               />
             </div>
-            <div className="w-full ">
+            <div className={`w-full ${partner.contact ? "block" : "hidden"}`}>
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 Contact
               </label>
@@ -1439,7 +1475,7 @@ const TerritoryPartner = () => {
                 readOnly
               />
             </div>
-            <div className="w-full ">
+            <div className={`w-full ${partner.email ? "block" : "hidden"}`}>
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 Email
               </label>
@@ -1451,7 +1487,9 @@ const TerritoryPartner = () => {
                 readOnly
               />
             </div>
-            <div className="w-full ">
+            <div
+              className={`w-full ${partner.experience ? "block" : "hidden"}`}
+            >
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 Experience
               </label>
@@ -1463,7 +1501,7 @@ const TerritoryPartner = () => {
                 readOnly
               />
             </div>
-            <div className="w-full ">
+            <div className={`w-full ${partner.bankname ? "block" : "hidden"}`}>
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 Bank Name
               </label>
@@ -1475,7 +1513,9 @@ const TerritoryPartner = () => {
                 readOnly
               />
             </div>
-            <div className="w-full ">
+            <div
+              className={`w-full ${partner.accountholdername ? "block" : "hidden"}`}
+            >
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 Account Holder Name
               </label>
@@ -1487,7 +1527,9 @@ const TerritoryPartner = () => {
                 readOnly
               />
             </div>
-            <div className="w-full ">
+            <div
+              className={`w-full ${partner.accountnumber ? "block" : "hidden"}`}
+            >
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 Account Number
               </label>
@@ -1499,7 +1541,7 @@ const TerritoryPartner = () => {
                 readOnly
               />
             </div>
-            <div className="w-full ">
+            <div className={`w-full ${partner.ifsc ? "block" : "hidden"}`}>
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 IFSC Code
               </label>
@@ -1511,7 +1553,7 @@ const TerritoryPartner = () => {
                 readOnly
               />
             </div>
-            <div className="w-full ">
+            <div className={`w-full ${partner.address ? "block" : "hidden"}`}>
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 Address
               </label>
@@ -1523,7 +1565,7 @@ const TerritoryPartner = () => {
                 readOnly
               />
             </div>
-            <div className="w-full ">
+            <div className={`w-full ${partner.state ? "block" : "hidden"}`}>
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 State
               </label>
@@ -1535,7 +1577,7 @@ const TerritoryPartner = () => {
                 readOnly
               />
             </div>
-            <div className="w-full ">
+            <div className={`w-full ${partner.city ? "block" : "hidden"}`}>
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 City
               </label>
@@ -1547,7 +1589,7 @@ const TerritoryPartner = () => {
                 readOnly
               />
             </div>
-            <div className="w-full ">
+            <div className={`w-full ${partner.pincode ? "block" : "hidden"}`}>
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 Pin-Code
               </label>
@@ -1561,7 +1603,7 @@ const TerritoryPartner = () => {
             </div>
 
             <div></div>
-            <div className="w-full ">
+            <div className={`w-full ${partner.adharno ? "block" : "hidden"}`}>
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 Adhar No
               </label>
@@ -1573,7 +1615,7 @@ const TerritoryPartner = () => {
                 readOnly
               />
             </div>
-            <div className="w-full ">
+            <div className={`w-full ${partner.panno ? "block" : "hidden"}`}>
               <label className="block text-sm leading-4 text-[#00000066] font-medium">
                 Pancard No
               </label>
@@ -1686,6 +1728,78 @@ const TerritoryPartner = () => {
               </div>
             </div>
           </form>
+          {/* Subscription History */}
+
+          <div className="mt-8">
+            <h3 className="text-[15px] font-semibold mb-3 border-b pb-2">
+              Subscription History
+            </h3>
+
+            {partner?.subscriptionHistory?.length === 0 ? (
+              <p className="text-sm text-gray-500">
+                No subscription history found
+              </p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm border border-[#00000022]">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="p-2 border">Plan</th>
+                      <th className="p-2 border">Amount</th>
+                      <th className="p-2 border">Start</th>
+                      <th className="p-2 border">End</th>
+                      <th className="p-2 border">Payment</th>
+                      <th className="p-2 border">Status</th>
+                      <th className="p-2 border">Screenshot</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {partner?.subscriptionHistory?.map((sub) => (
+                      <tr key={sub.id} className="text-center">
+                        <td className="p-2 border">
+                          {sub.plan
+                            ? sub.plan + " Months"
+                            : partner.mode.toUpperCase()}
+                        </td>
+
+                        <td className="p-2 border">₹{sub.amount}</td>
+
+                        <td className="p-2 border">
+                          {new Date(sub.start_date).toLocaleDateString()}
+                        </td>
+
+                        <td className="p-2 border">
+                          {new Date(sub.end_date).toLocaleDateString()}
+                        </td>
+
+                        <td className="p-2 border capitalize">
+                          {sub.payment_type}
+                        </td>
+
+                        <td className="p-2 border">{sub.status}</td>
+
+                        <td className="p-2 border">
+                          {sub.screenshot ? (
+                            <img
+                              src={sub.screenshot}
+                              alt="payment"
+                              onClick={() =>
+                                window.open(sub.screenshot, "_blank")
+                              }
+                              className="w-[40px] h-[40px] object-cover cursor-pointer mx-auto"
+                            />
+                          ) : (
+                            "-"
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

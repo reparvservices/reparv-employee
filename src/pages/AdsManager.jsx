@@ -93,7 +93,7 @@ const AdsManager = () => {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       if (!response.ok) throw new Error("Failed to fetch cities.");
       const data = await response.json();
@@ -114,7 +114,7 @@ const AdsManager = () => {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       if (!response.ok)
         throw new Error("Failed to fetch project partner list.");
@@ -136,7 +136,7 @@ const AdsManager = () => {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       if (!response.ok)
         throw new Error("Failed to fetch Project Partner Data.");
@@ -251,13 +251,13 @@ const AdsManager = () => {
         alert("Ads Manager already exists!");
       } else if (!response.ok) {
         throw new Error(
-          `Failed to save Ads Manager. Status: ${response.status}`
+          `Failed to save Ads Manager. Status: ${response.status}`,
         );
       } else {
         alert(
           newAdsManager.id
             ? "Ads Manager updated successfully!"
-            : "Ads Manager added successfully!"
+            : "Ads Manager added successfully!",
         );
 
         setNewAdsManager({
@@ -370,7 +370,7 @@ const AdsManager = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ adURL }),
-        }
+        },
       );
 
       const data = await response.json();
@@ -404,7 +404,7 @@ const AdsManager = () => {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       const data = await response.json();
       console.log(response);
@@ -447,7 +447,9 @@ const AdsManager = () => {
         .includes(searchTerm.toLowerCase()) ||
       item.propertyCityId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.propertyName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.projectPartnerName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.projectPartnerName
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
       item.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.state?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.planName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -484,7 +486,7 @@ const AdsManager = () => {
     const itemDate = parse(
       item.created_at,
       "dd MMM yyyy | hh:mm a",
-      new Date()
+      new Date(),
     );
 
     const matchesDate =
@@ -566,8 +568,8 @@ const AdsManager = () => {
             row.status === "Active"
               ? "bg-[#EAFBF1] text-[#0BB501]"
               : row.status === "Pending"
-              ? "bg-[#FFEAEA] text-[#ff2323]"
-              : "text-[#000000]"
+                ? "bg-[#FFEAEA] text-[#ff2323]"
+                : "text-[#000000]"
           }`}
         >
           {row.propertycityid || row.propertyCityId}
@@ -625,7 +627,8 @@ const AdsManager = () => {
     },
     {
       name: "Subscription Plan",
-      selector: (row) => row.planName || "-- Not Active --",
+      selector: ({ planName, mode }) =>
+        planName || (mode ? mode.toUpperCase() : "-- Not Active --"),
       minWidth: "200px",
     },
     { name: "Start Date", selector: (row) => row.startDate, width: "200px" },
@@ -638,7 +641,7 @@ const AdsManager = () => {
             <div
               onClick={() => {
                 navigator.clipboard.writeText(
-                  `https://www.reparv.in/project-partner/${row.projectPartnerContact}`
+                  `https://www.reparv.in/project-partner/${row.projectPartnerContact}`,
                 );
                 alert("Landing Page Link Copied Successfully!");
               }}
@@ -650,7 +653,7 @@ const AdsManager = () => {
               onClick={() => {
                 window.open(
                   `https://www.reparv.in/project-partner/${row.projectPartnerContact}`,
-                  "_blank"
+                  "_blank",
                 );
               }}
               className="flex items-center justify-center w-8 h-8 p-2 text-white bg-red-600 rounded-lg cursor-pointer active:scale-95"
