@@ -37,6 +37,7 @@ export const AuthProvider = ({ children }) => {
   const [showSalesForm, setShowSalesForm] = useState(false);
   const [showSalesPerson, setShowSalesPerson] = useState(false);
   const [showAuctionForm, setShowAuctionForm] = useState(false);
+  const [propertyFilter, setPropertyFilter] = useState("Approved");
   const [showPropertyForm, setShowPropertyForm] = useState(false);
   const [showPropertyTypeForm, setShowPropertyTypeForm] = useState(false);
   const [showRoleForm, setShowRoleForm] = useState(false);
@@ -220,6 +221,8 @@ export const AuthProvider = ({ children }) => {
         setShowCustomerPaymentForm,
         filterStatus,
         setFilterStatus,
+        propertyFilter,
+        setPropertyFilter,
         showEMI,
         setShowEMI,
         showEMIForm,

@@ -30,6 +30,7 @@ import {
   FaShareAlt,
 } from "react-icons/fa";
 import { formatNumber } from "../utils/formatNumber";
+import PropertyFilter from "../components/PropertyFilter";
 
 const Properties = () => {
   const navigate = useNavigate();
@@ -37,6 +38,8 @@ const Properties = () => {
   const {
     setShowPropertyForm,
     showPropertyForm,
+    propertyFilter,
+    setPropertyFilter,
     showUpdateImagesForm,
     setShowUpdateImagesForm,
     showAdditionalInfoForm,
@@ -1402,6 +1405,24 @@ const Properties = () => {
     }
   }, [newProperty.state]);
 
+  const getPropertyCounts = (data) => {
+    return data.reduce(
+      (acc, item) => {
+        if (item.approve === "Approved") {
+          acc.Approved++;
+        } else if (item.approve === "Not Approved") {
+          acc.NotApproved++;
+        } else if (item.approve === "Rejected") {
+          acc.Rejected++;
+        }
+        return acc;
+      },
+      { Approved: 0, NotApproved: 0, Rejected: 0 },
+    );
+  };
+
+  const propertyCounts = getPropertyCounts(datas);
+
   const [range, setRange] = useState([
     {
       startDate: null,
@@ -1445,6 +1466,23 @@ const Properties = () => {
         itemDate >= startDate &&
         itemDate <= endDate);
 
+    /* Property approval filter */
+    const getPropertyApprovedStatus = () => {
+      switch (item.approve) {
+        case "Approved":
+          return "Approved";
+        case "Not Approved":
+          return "Not Approved";
+        case "Rejected":
+          return "Rejected";
+        default:
+          return "";
+      }
+    };
+
+    const matchesProperty =
+      !propertyFilter || getPropertyApprovedStatus() === propertyFilter;
+
     /* SEO filter */
     const isSeoMissing =
       !item.seoSlug?.trim() ||
@@ -1455,7 +1493,7 @@ const Properties = () => {
     const matchesSeo = seoActive ? isSeoMissing : true;
 
     /* Final decision */
-    return matchesSearch && matchesDate && matchesSeo;
+    return matchesSearch && matchesDate && matchesProperty && matchesSeo;
   });
 
   const customStyles = {
@@ -1911,7 +1949,9 @@ const Properties = () => {
             </div>
           </div>
         </div>
-
+        <div className="filterContainer w-full flex flex-col sm:flex-row items-center justify-between gap-3">
+          <PropertyFilter counts={propertyCounts} />
+        </div>
         <h2 className="text-[16px] font-semibold">Properties List</h2>
         <div className="overflow-scroll scrollbar-hide">
           <DataTable
